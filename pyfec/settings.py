@@ -29,26 +29,26 @@ DELAY_TIME = 1
 ARCHIVE_DIR_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 # For local temp files.
-FILECACHE_DIRECTORY = ARCHIVE_DIR_ROOT + '/data/fec_filings'
-PAPER_FILECACHE_DIRECTORY = ARCHIVE_DIR_ROOT + '/paper_data/fec_filings'
+FILECACHE_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/data/fec_filings'
+# PAPER_FILECACHE_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/paper_data/fec_filings'
 
-# For downloading / unzipping FEC bundles.
-ZIP_DIRECTORY = ARCHIVE_DIR_ROOT + '/data/zipped_fec_filings'
-PAPER_ZIP_DIRECTORY = ARCHIVE_DIR_ROOT + '/paper_data/zipped_fec_filings'
+# # For downloading / unzipping FEC bundles.
+# ZIP_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/data/zipped_fec_filings'
+# PAPER_ZIP_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/paper_data/zipped_fec_filings'
 
-# For JSON output.
-JSON_DIRECTORY = ARCHIVE_DIR_ROOT + '/data/json'
-PAPER_JSON_DIRECTORY = ARCHIVE_DIR_ROOT + '/paper_data/json'
+# # For JSON output.
+# JSON_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/data/json'
+# PAPER_JSON_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/demo/paper_data/json'
 
 
-LOG_DIRECTORY = ARCHIVE_DIR_ROOT + "/log"
+LOG_DIRECTORY = ARCHIVE_DIR_ROOT + "/pyfec/log"
 
 # Updated CSVs from Fech.
 CSV_FILE_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/fec-csv-sources'
-PAPER_CSV_FILE_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/fec-csv-sources/paper_sources'
+# PAPER_CSV_FILE_DIRECTORY = ARCHIVE_DIR_ROOT + '/pyfec/fec-csv-sources/paper_sources'
 
 # Create directories that do not exist.
-for directory in [ARCHIVE_DIR_ROOT,FILECACHE_DIRECTORY,PAPER_FILECACHE_DIRECTORY,ZIP_DIRECTORY,PAPER_ZIP_DIRECTORY,JSON_DIRECTORY,PAPER_JSON_DIRECTORY,LOG_DIRECTORY,CSV_FILE_DIRECTORY,PAPER_CSV_FILE_DIRECTORY]:
+for directory in [FILECACHE_DIRECTORY,CSV_FILE_DIRECTORY]:
     if not os.path.isdir(directory):
         os.system('mkdir -p %s' % directory)
 
