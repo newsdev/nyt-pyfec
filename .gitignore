@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+.DS_Store
+
+data/
+paper_data/
+log/
