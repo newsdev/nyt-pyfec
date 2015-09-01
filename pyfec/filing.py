@@ -6,7 +6,6 @@ from colorama import Fore, Back, Style, init
 import requests
 
 from pyfec import header
-from pyfec import settings
 from pyfec.utils.parsing_utils import utf8_clean, clean_entry
 
 

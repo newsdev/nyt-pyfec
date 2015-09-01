@@ -29,22 +29,18 @@ for this_file in files:
     version = f1.version
     filer_id = f1.get_filer_id()
 
-    
-
     print Style.BRIGHT + Fore.CYAN + "~~DEMO APP~~"
     print Style.BRIGHT + Fore.GREEN + " Headers: " + Style.BRIGHT + Fore.YELLOW + "%s" % ", ".join(f1.headers.keys())
+    print Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (version)
 
     if f1.is_amendment:
         print Style.BRIGHT + Fore.GREEN + " Amends filing: " + Style.BRIGHT + Fore.YELLOW + "%s" % (f1.headers['filing_amended'])
-
 
     if not fp.is_allowed_form(formtype):
         print Style.BRIGHT + Fore.RED + " Not parseable: " + Style.BRIGHT + Fore.YELLOW +  "%s" % formtype
         continue
 
     firstrow = fp.parse_form_line(f1.get_first_row(), version)    
-
-    print Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (version)
 
     line_sequence = 0
 

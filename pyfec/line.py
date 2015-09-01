@@ -6,7 +6,7 @@ This version adds csvs for the converted paper files which have since become ava
 import csv
 import re
 
-from pyfec import settings
+from pyfec import CSV_FILE_DIRECTORY,PAPER_CSV_FILE_DIRECTORY
 from pyfec.utils.parsing_utils import clean_entry
 
 
@@ -18,9 +18,9 @@ class parser(object):
         self.column_locations_dict = {}
         
         if is_paper:
-            form_file = "%s/%s.csv" % (settings.PAPER_CSV_FILE_DIRECTORY, form)
+            form_file = "%s/%s.csv" % (PAPER_CSV_FILE_DIRECTORY, form)
         else:
-            form_file = "%s/%s.csv" % (settings.CSV_FILE_DIRECTORY, form)
+            form_file = "%s/%s.csv" % (CSV_FILE_DIRECTORY, form)
 
         # Need to open in universal newline mode
         form_reader = csv.reader(open(form_file, 'rU'))

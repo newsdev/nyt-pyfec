@@ -1,7 +1,7 @@
 import string
 import urllib2
 
-from pyfec import settings
+from pyfec import USER_AGENT
 
 
 # Removes some characters we've discovered, including some special Windows chars,
@@ -26,7 +26,7 @@ def recode_to_utf8(self, text):
     
 def download_with_headers(url):
     """ Sign our requests with a user agent set in the FEC_local_settings file. """
-    headers = { 'User-Agent' : settings.USER_AGENT }    
+    headers = { 'User-Agent' : USER_AGENT }    
     req = urllib2.Request(url, None, headers)
     return urllib2.urlopen(req).read()
 
