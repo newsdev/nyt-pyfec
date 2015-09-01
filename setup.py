@@ -16,7 +16,7 @@ setup(
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
     url='https://github.com/newsdev/nyt-pyfec',
-    description='Python client for parsing campaign finance data from the Federal Election Commission\'s web site.',
+    description="Python client for parsing campaign finance data from the Federal Election Commission's web site.",
     long_description=read('README.rst'),
     packages=['pyfec'],
     license="Apache License 2.0",
