@@ -1,5 +1,9 @@
-import re
 import csv
+import os
+import re
+
+from colorama import Fore, Back, Style, init
+import requests
 
 from pyfec import header
 from pyfec import settings
@@ -24,8 +28,9 @@ class filing(object):
     """
 
     def __init__(self, filing_number, is_paper=False):
-
-        self.filing_number = None
+        init(autoreset=True)
+        print Style.BRIGHT + Fore.CYAN + "~~FILING CLASS~~"
+        print Style.BRIGHT + Fore.MAGENTA + "Getting filing " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_number
         self.version = None
         self.filing_lines = []
 
@@ -42,12 +47,9 @@ class filing(object):
         self.filing_number = filing_number
         self.is_paper = is_paper
         self.headers['filing_number'] = filing_number
+        self.local_file_location = "/tmp/%s.fec" % self.filing_number
 
-        if self.is_paper:
-            self.local_file_location = "%s/%s.fec" % (settings.PAPER_FILECACHE_DIRECTORY, self.filing_number)
-
-        else:
-            self.local_file_location = "%s/%s.fec" % (settings.FILECACHE_DIRECTORY, self.filing_number)
+        self.get_filing()
 
         self.fh = open(self.local_file_location, 'r')
 
@@ -66,9 +68,19 @@ class filing(object):
             self.fh.seek(0)
             self.csv_reader = csv.reader(self.fh)
         
-        self.is_error = not self._parse_headers()
+        self.is_error = not self.parse_headers()
 
-    def _get_next_fields(self):
+    def get_filing(self):
+        init(autoreset=True)
+        if not os.path.isfile(self.local_file_location):
+            print Style.BRIGHT + Fore.GREEN + " Downloading from the FEC."
+            r = requests.get('http://docquery.fec.gov/comma/%s' % self.local_file_location.split('/')[-1].split('.fec')[0])
+            with open('/tmp/%s' % filename, 'w') as writefile:
+                writefile.write(r.content)
+        else:
+            print Style.BRIGHT + Fore.GREEN + " Found local copy."
+
+    def get_next_fields(self):
         if self.use_new_delimiter:
             nextline = self.fh.readline()
 
@@ -84,10 +96,10 @@ class filing(object):
             except StopIteration:
                 return None
 
-    def _parse_headers(self):
+    def parse_headers(self):
 
-        header_arr = self._get_next_fields()
-        summary_line = self._get_next_fields()
+        header_arr = self.get_next_fields()
+        summary_line = self.get_next_fields()
         self.form_row = summary_line
 
         self.headers = header.parse(header_arr, self.is_paper)
@@ -154,7 +166,7 @@ class filing(object):
         next_line = ''
 
         while True:
-            next_line = self._get_next_fields()
+            next_line = self.get_next_fields()
 
             if next_line:
 
