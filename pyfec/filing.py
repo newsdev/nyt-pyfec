@@ -6,7 +6,8 @@ from colorama import Fore, Back, Style, init
 import requests
 
 from pyfec import header
-from pyfec.utils.parsing_utils import utf8_clean, clean_entry
+from pyfec.utils import utf8_clean, clean_entry
+from pyfec import utils
 
 
 # Current FCC files are delimited by ascii 28.
@@ -53,7 +54,7 @@ class filing(object):
         self.fh = open(self.local_file_location, 'r')
 
         # The header row indicates what type of file this is.
-        self.header_row = self.fh.readline()    
+        self.header_row = self.fh.readline()
 
         # Check for a delimiter. 
         if self.header_row.find(new_delimiter) > -1:
@@ -73,9 +74,17 @@ class filing(object):
         init(autoreset=True)
         if not os.path.isfile(self.local_file_location):
             print Style.BRIGHT + Fore.GREEN + " Downloading from the FEC."
-            r = requests.get('http://docquery.fec.gov/comma/%s' % self.local_file_location.split('/')[-1].split('.fec')[0])
-            with open('/tmp/%s' % filename, 'w') as writefile:
-                writefile.write(r.content)
+
+            constructed_url = 'http://docquery.fec.gov/dcdev/posted/%s' % self.local_file_location.split('/')[-1]
+
+            r = requests.get(constructed_url)
+
+            if r.status_code == 200:
+                with open(self.local_file_location, 'w') as writefile:
+                    writefile.write(r.content)
+            else:
+                raise utils.PyFecException("Can't download %s. The server returned a %s error." % (constructed_url, r.status_code))
+
         else:
             print Style.BRIGHT + Fore.GREEN + " Found local copy."
 

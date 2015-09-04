@@ -7,7 +7,7 @@ import csv
 import re
 
 from pyfec import CSV_FILE_DIRECTORY,PAPER_CSV_FILE_DIRECTORY
-from pyfec.utils.parsing_utils import clean_entry
+from pyfec.utils import clean_entry
 
 
 class parser(object):

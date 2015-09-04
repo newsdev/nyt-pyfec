@@ -9,7 +9,6 @@ import humanize
 from pyfec import form
 from pyfec import filing
 from pyfec import settings
-from pyfec.utils.filing_body_processor import process_body_row
 
 fp = form.parser()
 fec_format_file = re.compile(r'\d+\.fec')
