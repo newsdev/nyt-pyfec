@@ -12,7 +12,7 @@ def read(filename):
 
 setup(
     name='nyt-pyfec',
-    version='0.0.2',
+    version='0.0.3',
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
     url='https://github.com/newsdev/nyt-pyfec',
@@ -22,7 +22,7 @@ setup(
     license="Apache License 2.0",
     keywords='FEC election finance campaign data parsing scraping donation expenditure candidate committee',
     install_requires=['lxml==3.4.4','psycopg2==2.6.1','python-dateutil==2.4.2','requests==2.7.0','six==1.9.0','wheel==0.24.0','colorama==0.3.3','humanize==0.5.1'],
-    classifiers=['Development Status :: 4 - Beta',
+    classifiers=['Development Status :: 3 - Alpha',
                  'Intended Audience :: Developers',
                  'Programming Language :: Python',
                  'Topic :: Software Development :: Libraries :: Python Modules']
