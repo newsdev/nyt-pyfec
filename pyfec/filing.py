@@ -29,7 +29,6 @@ class filing(object):
 
     def __init__(self, filing_number, is_paper=False):
         init(autoreset=True)
-        print Style.BRIGHT + Fore.CYAN + "~~FILING CLASS~~"
         print Style.BRIGHT + Fore.MAGENTA + "Getting filing " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_number
         self.version = None
         self.filing_lines = []
