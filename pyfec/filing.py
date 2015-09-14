@@ -82,10 +82,10 @@ class filing(object):
                 with open(self.local_file_location, 'w') as writefile:
                     writefile.write(r.content)
             else:
-                raise utils.PyFecException("Can't download %s. The server returned a %s error." % (constructed_url, r.status_code))
+                raise utils.PyFecException(Style.BRIGHT + Fore.RED + " %s error: Can't download %s. " % (r.status_code, constructed_url))
 
         else:
-            print Style.BRIGHT + Fore.GREEN + " Found local copy."
+            print Style.BRIGHT + Fore.GREEN + " Using local copy."
 
     def get_next_fields(self):
         if self.use_new_delimiter:
@@ -134,8 +134,6 @@ class filing(object):
                 self.headers['filing_amended'] = None
 
             else:
-                # Listing the original only works for electonic filings, of course!
-                print "Found amendment %s : %s " % (self.filing_number, self.headers['report_id'])
                 amendment_match = re.search('^FEC\s*-\s*(\d+)', self.headers['report_id'])
     
                 if amendment_match:
