@@ -304,7 +304,7 @@ def transform_line(line_dict, filing_dict):
     filing_id = filing_dict['filer_id']
     line_sequence = line_dict['line_sequence']
     is_amended = line_dict.get('is_amended', None)
-    filer_id = filing_headers['filing_number']
+    filer_id = filing_dict['filing_number']
 
     if line_dict['form_parser'] == 'SchA':
         return ('A', skeda_from_skedadict(line_dict, filing_id, line_sequence, is_amended))
