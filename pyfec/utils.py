@@ -303,7 +303,7 @@ def transform_line(line_dict, filing_dict):
 
     filing_id = filing_dict['filer_id']
     line_sequence = line_dict['line_sequence']
-    is_amended = line_dict['is_amended']
+    is_amended = line_dict.get('is_amended', None)
     filer_id = filing_headers['filing_number']
 
     if line_dict['form_parser'] == 'SchA':
