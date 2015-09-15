@@ -296,10 +296,15 @@ def otherline_from_line(line_dict, filing_number, line_sequence, is_amended, fil
         pass
     return line_dict
 
-def transform_line(line_dict, filing_id, line_sequence, is_amended, filer_id):
+def transform_line(line_dict, filing_headers):
     """
     Returns a tuple: ('skedletter', datadict)
     """
+
+    filing_id = filing_headers['fec_id']
+    line_sequence = line_dict['line_sequence']
+    is_amended = line_dict['is_amended']
+    filer_id = filing_headers['filer_id']
 
     if line_dict['form_parser'] == 'SchA':
         return ('A', skeda_from_skedadict(line_dict, filing_id, line_sequence, is_amended))
