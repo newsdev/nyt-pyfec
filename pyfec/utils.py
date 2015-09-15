@@ -133,8 +133,6 @@ def skeda_from_skedadict(line_dict, filing_number, line_sequence, is_amended):
             pass
     return line_dict
 
-
-
 def skeda_from_f65(line_dict, filing_number, line_sequence, is_amended):
     """
     Enter 48-hour contributions to candidate as if it were a sked A.
@@ -323,7 +321,7 @@ def parse_filing(line_dict, filing_id, line_sequence, is_amended, filer_id):
 
     # Disclosed electioneering donor.
     elif line_dict['form_parser'] == 'F92':
-        return ('A', skeda_from_f92(line_dict, filing_id, line_sequence, is_amended)]  )
+        return ('A', skeda_from_f92(line_dict, filing_id, line_sequence, is_amended))
 
     # Inaugural donors.
     elif line_dict['form_parser'] == 'F132':
