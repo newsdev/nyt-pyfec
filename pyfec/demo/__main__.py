@@ -10,10 +10,10 @@ from pyfec import form
 from pyfec import filing
 from pyfec import settings
 
-fp = form.parser()
+fp = form.Form()
 fec_format_file = re.compile(r'\d+\.fec')
 
-files = ['827978', '1019752', '1019943']
+files = ['1024610', '1024649']
 init(autoreset=True)
 
 start = datetime.datetime.now()
@@ -22,7 +22,7 @@ payload = []
 
 for this_file in files:
     filing_dict = {}
-    f1 = filing.filing(this_file)
+    f1 = filing.Filing(this_file)
 
     filing_dict['formtype'] = f1.get_form_type()
     filing_dict['version'] = f1.version

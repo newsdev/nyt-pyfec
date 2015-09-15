@@ -296,7 +296,7 @@ def otherline_from_line(line_dict, filing_number, line_sequence, is_amended, fil
         pass
     return line_dict
 
-def parse_filing(line_dict, filing_id, line_sequence, is_amended, filer_id):
+def transform_line(line_dict, filing_id, line_sequence, is_amended, filer_id):
     """
     Returns a tuple: ('skedletter', datadict)
     """
