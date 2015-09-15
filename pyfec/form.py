@@ -1,20 +1,15 @@
-"""
-Load up line parsers for the forms that we care about.
-By keeping them in one central wrapper class we don't have to keep initializing them.
-"""
-
 import re
 
 from pyfec import line
 
 
 class ParserMissingError(Exception):
- pass
+    pass
 
 
 class BaseParser(object):
     """
-    Base class both the form_parser and paper_form_parser can inherit from.
+    Base class both  Form and PaperForm can inherit.
     """
 
     def is_allowed_form(self, form_name):
@@ -35,29 +30,26 @@ class BaseParser(object):
         'SC/10' and 'SC/12' are line types from v. 6.4, but they can be parsed by 'SC'.
         """
         for regex in self.regex_tuple:
-
             if re.match(regex,form_type, re.I):
                 parser = self.line_dict[regex]
                 return parser
-
         return None
-        
+
     def parse_form_line(self, line_array, version):
         form_type = line_array[0].replace('"', '').upper()
         parser = self.get_line_parser(form_type)
-
         if parser:
             parsed_line = parser.parse_line(line_array, version)
             parsed_line['form_parser'] = parser.form  # Records the line parser name.
             return parsed_line
-
         else:
             raise ParserMissingError ("Couldn't find parser for form type %s, v=%s" % (form_type, version))  
 
 
-class parser(BaseParser):
-    """ Matches a form to a set of headers, then passes to line.parser for each row."""
-
+class Form(BaseParser):
+    """
+    Matches a form to a set of headers, then passes to line.Line for each row.
+    """
     def __init__(self):
         self.allowed_forms = {
             'F3': 1,
@@ -72,72 +64,58 @@ class parser(BaseParser):
             'F3L':1,
             'F13':1,
         }
-                
         # F3P periodic presidential filing
-        f3p = line.parser('F3P')
-
+        f3p = line.Line('F3P')
         # F3X -- periodic pac filing
-        f3x = line.parser('F3X')
-        f3ps = line.parser('F3PS')
-        
+        f3x = line.Line('F3X')
+        f3ps = line.Line('F3PS')
         # F4 inaugural committees
-        f4 = line.parser('F4')
-        
-        # schedules
-        sa = line.parser('SchA')
-        sa3l = line.parser('SchA3L')
-        sb = line.parser('SchB')
-        sc1 = line.parser('SchC1')
-        sc2 = line.parser('SchC2')
-        sc = line.parser('SchC')
-        sd = line.parser('SchD')
-        se = line.parser('SchE')
-        sf = line.parser('SchF')
-        h1 = line.parser('H1')
-        h2 = line.parser('H2')
-        h3 = line.parser('H3')
-        h4 = line.parser('H4')
-        h5 = line.parser('H5')
-        h6 = line.parser('H6')
-        sl = line.parser('SchL')
-                
+        f4 = line.Line('F4')
+        # Schedules
+        sa = line.Line('SchA')
+        sa3l = line.Line('SchA3L')
+        sb = line.Line('SchB')
+        sc1 = line.Line('SchC1')
+        sc2 = line.Line('SchC2')
+        sc = line.Line('SchC')
+        sd = line.Line('SchD')
+        se = line.Line('SchE')
+        sf = line.Line('SchF')
+        h1 = line.Line('H1')
+        h2 = line.Line('H2')
+        h3 = line.Line('H3')
+        h4 = line.Line('H4')
+        h5 = line.Line('H5')
+        h6 = line.Line('H6')
+        sl = line.Line('SchL')
         # F24 -- 24 hr ie report
-        f24 = line.parser('F24')
-
+        f24 = line.Line('F24')
         #F9 -- Electioneering communication
-        f9 = line.parser('F9')
-        f91 = line.parser('F91')
-        f92 = line.parser('F92')
-        f93 = line.parser('F93')
-        f94 = line.parser('F94')
-
+        f9 = line.Line('F9')
+        f91 = line.Line('F91')
+        f92 = line.Line('F92')
+        f93 = line.Line('F93')
+        f94 = line.Line('F94')
         # IE report by non-committee, roughly
-        f5 = line.parser('F5')
-        f56 = line.parser('F56')
-        f57 = line.parser('F57')
-        
+        f5 = line.Line('F5')
+        f56 = line.Line('F56')
+        f57 = line.Line('F57')
         # 48-hr report from candidate committee
-        f6 = line.parser('F6')
-        f65 = line.parser('F65')
-        
+        f6 = line.Line('F6')
+        f65 = line.Line('F65')
         # communication cost - these are typically filed in print
-        f7 = line.parser('F7')
-        f76 = line.parser('F76')
-        
+        f7 = line.Line('F7')
+        f76 = line.Line('F76')
         # F3 Periodic report for candidate
-        f3 = line.parser('F3')
-        f3s = line.parser('F3S')
-        
+        f3 = line.Line('F3')
+        f3s = line.Line('F3S')
         # lobbyist bundling
-        f3l = line.parser('F3L')
-
+        f3l = line.Line('F3L')
         # Allow text in lines
-        text = line.parser('TEXT')
-        
-        f13 = line.parser('F13')
-        f132 = line.parser('F132')
-        f133 = line.parser('F133')
-
+        text = line.Line('TEXT')
+        f13 = line.Line('F13')
+        f132 = line.Line('F132')
+        f133 = line.Line('F133')
         # match form type to appropriate parsers; must be applied with re.I
         # the leading ^ are redundant if we're using re.match, but...
         self.line_dict = {
@@ -171,7 +149,7 @@ class parser(BaseParser):
             '^F94': f94,
             '^F9': f9,
             '^F57': f57,
-            '^F56': f56,            
+            '^F56': f56,
             '^F5': f5,
             '^TEXT': text,
             '^F24': f24,
@@ -182,13 +160,12 @@ class parser(BaseParser):
             '^F132':f132,
             '^F133':f133,
         }
-
         # The regex parsers must be tested in a certain order and must be an exact match, since it will use the
         # resulting headers as the keys in the output dictionaries.
         self.regex_tuple = ('^SA3L','^SA','^SB','^SC1','^SC2','^SC','^SD','^SE','^SF','^F3X[A|N|T]','^F3P[A|N|T]','^F3S','^F3[A|N|T]$','^F91','^F92','^F93','^F94','^F9','^F6[A|N]*$','^F65','^F57','^F56','^F5','^TEXT','^F24','^H1','^H2','^H3','^H4','^H5','^H6','^SL','^F3PS','^F76$','^F7[A|N]$','^F4[A|N|T]','^F3L[A|N]','^F13[A|N]$','^F132','^F133')
 
 
-class paper_form_parser(BaseParser):
+class PaperForm(BaseParser):
 
     def __init__(self):
         """
@@ -198,15 +175,15 @@ class paper_form_parser(BaseParser):
             'F3': 1,
             'F3X':1,
         }
-        
+
         # F3X -- periodic pac filing.
-        f3x = line.parser('F3X', True)
-        f3 = line.parser('F3', True)
-        sa = line.parser('SchA', True)
-        sb = line.parser('SchB', True)
-        sc = line.parser('SchC', True)
-        sd = line.parser('SchD', True)
-        se = line.parser('SchE', True)
+        f3x = line.Line('F3X', True)
+        f3 = line.Line('F3', True)
+        sa = line.Line('SchA', True)
+        sb = line.Line('SchB', True)
+        sc = line.Line('SchC', True)
+        sd = line.Line('SchD', True)
+        se = line.Line('SchE', True)
 
         # Match form type to appropriate parsers; must be applied with re.I
         self.line_dict = {

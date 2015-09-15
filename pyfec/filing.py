@@ -22,11 +22,10 @@ paper_headers_v2_2 = ['record_type', 'fec_version', 'vendor', 'batch_number']
 paper_headers_v1 = ['record_type', 'fec_version', 'vendor', 'batch_number', 'report_id']
 
 
-class filing(object):
+class Filing(object):
     """
     Represents a single filing.
     """
-
     def __init__(self, filing_number, is_paper=False):
         init(autoreset=True)
         print Style.BRIGHT + Fore.MAGENTA + "Getting filing " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_number
