@@ -8,7 +8,6 @@ import humanize
 
 from pyfec import form
 from pyfec import filing
-from pyfec import settings
 
 fp = form.Form()
 fec_format_file = re.compile(r'\d+\.fec')
