@@ -221,8 +221,7 @@ class Filing(object):
             return {}
 
         summary = fp.parse_form_line(self.form_row, self.version)
-        print self.get_form_type()
-
+        
         if self.get_form_type().upper() in ['F3A', 'F3N', 'F3T', 'F3']:
             parsed_data = process_f3_header(summary)
         
