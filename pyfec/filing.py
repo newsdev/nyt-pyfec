@@ -4,8 +4,10 @@ import re
 
 from colorama import Fore, Back, Style, init
 import requests
+from collections import defaultdict
 
 from pyfec import header
+from pyfec import form
 from pyfec.utils import utf8_clean, clean_entry
 from pyfec import utils
 
@@ -67,6 +69,8 @@ class Filing(object):
             self.csv_reader = csv.reader(self.fh)
         
         self.is_error = not self.parse_headers()
+        self.flat_filing = self.flatten_filing()
+        print "flat filing:", self.flat_filing
 
     def get_filing(self):
         init(autoreset=True)
@@ -209,3 +213,138 @@ class Filing(object):
 
     def dump_details(self):
         print "filing_number: %s ; self.headers: %s" % (self.filing_number, self.headers)
+
+    def flatten_filing(self):
+        """Create a one-level dict with info needed to create a campfin filing obj"""
+        fp = form.Form()
+        summary = fp.parse_form_line(self.form_row, self.version)
+        print self.get_form_type()
+
+        if self.get_form_type().upper() in ['F3A', 'F3N', 'F3T', 'F3']:
+            parsed_data = process_f3_header(summary)
+        
+        elif self.get_form_type().upper() in ['F3PA', 'F3PN', 'F3PT', 'F3P']:
+            parsed_data = process_f3p_header(summary)
+            
+        elif self.get_form_type().upper() in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
+            print "parsing"
+            parsed_data = process_f3x_header(summary)
+        
+        elif self.get_form_type().upper() in ['F5', 'F5A', 'F5N']:
+            parsed_data = process_f5_header(summary)
+                    
+            try:
+                self.is_f5_quarterly = summary['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+            except KeyError:
+                # this is probably a problem. 
+                pass
+
+        elif self.get_form_type().upper() in ['F7', 'F7A', 'F7N']:
+            parsed_data = process_f7_header(summary)        
+
+        elif self.get_form_type().upper() in ['F9', 'F9A', 'F9N']:
+            parsed_data = process_f9_header(summary)        
+        
+        elif self.get_form_type().upper() in ['F13', 'F13A', 'F13N']:
+            parsed_data = process_f13_header(summary)
+                    
+        else:
+            print "could not find form"
+            return None
+        parsed_data.update(self.headers)
+        return(parsed_data)
+
+def process_f3x_header(header_data):
+    return_dict = defaultdict(lambda:0)
+    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
+    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
+    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
+    return_dict['new_loans'] = header_data.get('col_a_total_loans')
+    return_dict['tot_ies'] = header_data.get('col_a_independent_expenditures')
+    return_dict['tot_coordinated'] = header_data.get('col_a_coordinated_expenditures_by_party_committees')
+    
+    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
+    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
+    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individuals_itemized')
+    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individuals_unitemized')
+    
+    return return_dict
+
+def process_f3p_header(header_data):
+    return_dict = defaultdict(lambda:0)
+    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
+    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
+    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
+    return_dict['new_loans'] = header_data.get('col_a_total_loans')
+    return_dict['tot_ies'] = header_data.get('col_a_independent_expenditures')
+    return_dict['tot_coordinated'] = header_data.get('col_a_coordinated_expenditures_by_party_committees')
+
+    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
+    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
+    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individuals_itemized')
+    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individuals_unitemized')
+    
+    return return_dict
+ 
+def process_f3_header(header_data):
+    return_dict = defaultdict(lambda:0)
+    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
+    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
+    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
+    return_dict['new_loans'] = header_data.get('col_a_total_loans')
+    
+    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
+    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
+    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individual_contributions_itemized')
+    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individual_contributions_unitemized')
+    
+    return return_dict
+    
+def process_f5_header(header_data):
+    # non-committee report of IE's
+    return_dict= defaultdict(lambda:0)
+    return_dict['tot_raised'] = header_data.get('total_contribution')
+    return_dict['tot_spent'] = header_data.get('total_independent_expenditure')  
+
+    # This usually isn't reported, but... 
+    return_dict['tot_contribs'] = header_data.get('total_contribution')
+    
+    # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
+        
+    return return_dict
+    
+def process_f7_header(header_data):
+    # communication cost    
+    return_dict= defaultdict(lambda:0)
+    return_dict['tot_spent'] = header_data.get('total_costs')    
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    
+    return return_dict
+
+def process_f9_header(header_data):
+    # electioneering 
+    return_dict= defaultdict(lambda:0)
+    return_dict['tot_raised'] = header_data.get('total_donations')
+    return_dict['tot_spent'] = header_data.get('total_disbursements')    
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    
+    # typically not reported... 
+    return_dict['tot_contribs'] = header_data.get('total_donations')
+    
+    return return_dict
+    
+
+def process_f13_header(header_data):
+    # donations to inaugural committee
+    return_dict= defaultdict(lambda:0)
+    return_dict['tot_raised'] = header_data.get('net_donations')
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    
+    # This is greater than tot_raised because it's before the donations refunded... 
+    return_dict['tot_contribs'] = header_data.get('total_donations_accepted')
+    return return_dict
