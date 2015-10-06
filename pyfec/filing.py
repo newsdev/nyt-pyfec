@@ -216,6 +216,10 @@ class Filing(object):
     def flatten_filing(self):
         """Create a one-level dict with info needed to create a campfin filing obj"""
         fp = form.Form()
+
+        if not fp.is_allowed_form(self.get_form_type()):
+            return {}
+
         summary = fp.parse_form_line(self.form_row, self.version)
         print self.get_form_type()
 
