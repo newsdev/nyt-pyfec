@@ -253,6 +253,8 @@ class Filing(object):
             print "could not find form"
             return None
         parsed_data.update(self.headers)
+        parsed_data['filing_id'] = int(self.filing_number)
+        parsed_data['filing_number'] = self.filing_number
         return(parsed_data)
 
 def process_f3x_header(header_data):
