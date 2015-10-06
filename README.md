@@ -2,6 +2,6 @@
 
 ## Getting started
 ```
-pip install -e git@github.com:newsdev/nyt-pyfec.git
+pip install -e git+git@github.com:newsdev/nyt-pyfec.git#egg=nyt-pyfec
 python -m pyfec.demo
 ```
