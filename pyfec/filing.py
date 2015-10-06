@@ -70,7 +70,6 @@ class Filing(object):
         
         self.is_error = not self.parse_headers()
         self.flat_filing = self.flatten_filing()
-        print "flat filing:", self.flat_filing
 
     def get_filing(self):
         init(autoreset=True)
@@ -227,7 +226,6 @@ class Filing(object):
             parsed_data = process_f3p_header(summary)
             
         elif self.get_form_type().upper() in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
-            print "parsing"
             parsed_data = process_f3x_header(summary)
         
         elif self.get_form_type().upper() in ['F5', 'F5A', 'F5N']:
