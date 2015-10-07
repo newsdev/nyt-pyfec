@@ -12,6 +12,10 @@ from pyfec.utils import utf8_clean, clean_entry
 from pyfec import utils
 
 
+class NotCurrentlyProcessingForm(utils.PyFecException):
+    pass
+
+
 # Current FCC files are delimited by ascii 28.
 # Electronic versions below 6 -- through 5.3 -- use a comma.
 new_delimiter = chr(28)
@@ -251,7 +255,7 @@ class Filing(object):
                     
         else:
             print "could not find form"
-            return None
+            raise NotCurrentlyProcessingForm(self.get_form_type().upper())
         parsed_data.update(self.headers)
         parsed_data['filing_id'] = int(self.filing_number)
         parsed_data['filing_number'] = self.filing_number
