@@ -5,7 +5,7 @@ import re
 from colorama import Fore, Back, Style, init
 import requests
 from collections import defaultdict
-from dateutil.parser import parse as dateparse
+from datetime import datetime
 
 from pyfec import header
 from pyfec import form
@@ -258,6 +258,14 @@ class Filing(object):
         parsed_data['filing_number'] = self.filing_number
         return(parsed_data)
 
+def dateparse_notnull(datestring):
+    """ dateparse returns today if given an empty string. Don't do that. """
+    if datestring:
+        datestring = datetime.strptime(datestring, '%Y%m%d')
+        return datestring
+    else:
+        return None
+
 def process_f3x_header(header_data):
     return_dict = defaultdict(lambda:0)
     return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
@@ -314,8 +322,8 @@ def process_f5_header(header_data):
     return_dict['tot_contribs'] = header_data.get('total_contribution')
     
     # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
-    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
-    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
         
     return return_dict
     
@@ -323,8 +331,8 @@ def process_f7_header(header_data):
     # communication cost    
     return_dict= defaultdict(lambda:0)
     return_dict['tot_spent'] = header_data.get('total_costs')    
-    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
-    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     return return_dict
 
@@ -333,29 +341,20 @@ def process_f9_header(header_data):
     return_dict= defaultdict(lambda:0)
     return_dict['tot_raised'] = header_data.get('total_donations')
     return_dict['tot_spent'] = header_data.get('total_disbursements')    
-    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
-    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # typically not reported... 
     return_dict['tot_contribs'] = header_data.get('total_donations')
     
     return return_dict
-    
-
-def dateparse_notnull(datestring):
-    """ dateparse returns today if given an empty string. Don't do that. """
-    if datestring:
-        datestring = datestring.strip()
-        return dateparse(datestring)
-    else:
-        return None
 
 def process_f13_header(header_data):
     # donations to inaugural committee
     return_dict= defaultdict(lambda:0)
     return_dict['tot_raised'] = header_data.get('net_donations')
-    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
-    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # This is greater than tot_raised because it's before the donations refunded... 
     return_dict['tot_contribs'] = header_data.get('total_donations_accepted')
