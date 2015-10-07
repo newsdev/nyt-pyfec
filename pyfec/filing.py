@@ -5,6 +5,7 @@ import re
 from colorama import Fore, Back, Style, init
 import requests
 from collections import defaultdict
+from dateutil.parser import parse as dateparse
 
 from pyfec import header
 from pyfec import form
@@ -340,6 +341,14 @@ def process_f9_header(header_data):
     
     return return_dict
     
+
+def dateparse_notnull(datestring):
+    """ dateparse returns today if given an empty string. Don't do that. """
+    if datestring:
+        datestring = datestring.strip()
+        return dateparse(datestring)
+    else:
+        return None
 
 def process_f13_header(header_data):
     # donations to inaugural committee
