@@ -229,8 +229,10 @@ def skedb_from_skedbdict(line_dict, filing_number, line_sequence, is_amended):
     line_dict['line_sequence'] = line_sequence
     line_dict['superseded_by_amendment'] = is_amended
     line_dict['filing_number'] = filing_number
-    line_dict['expenditure_amount'] = line_dict['expenditure_amount']
-    line_dict['semi_annual_refunded_bundled_amt'] = line_dict['semi_annual_refunded_bundled_amt']
+    if not line_dict['expenditure_amount']:
+        line_dict['expenditure_amount'] = None
+    if not line_dict['semi_annual_refunded_bundled_amt']:
+        line_dict['semi_annual_refunded_bundled_amt'] = None
     line_dict['ref_to_sys_code_ids_acct'] = line_dict['reference_to_si_or_sl_system_code_that_identifies_the_account']
     del line_dict['reference_to_si_or_sl_system_code_that_identifies_the_account'] # LOL FEC WAT
 
