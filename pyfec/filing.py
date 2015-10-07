@@ -314,8 +314,8 @@ def process_f5_header(header_data):
     return_dict['tot_contribs'] = header_data.get('total_contribution')
     
     # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
+    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
+    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
         
     return return_dict
     
@@ -323,8 +323,8 @@ def process_f7_header(header_data):
     # communication cost    
     return_dict= defaultdict(lambda:0)
     return_dict['tot_spent'] = header_data.get('total_costs')    
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
+    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
     
     return return_dict
 
@@ -333,8 +333,8 @@ def process_f9_header(header_data):
     return_dict= defaultdict(lambda:0)
     return_dict['tot_raised'] = header_data.get('total_donations')
     return_dict['tot_spent'] = header_data.get('total_disbursements')    
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
+    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
     
     # typically not reported... 
     return_dict['tot_contribs'] = header_data.get('total_donations')
@@ -354,8 +354,8 @@ def process_f13_header(header_data):
     # donations to inaugural committee
     return_dict= defaultdict(lambda:0)
     return_dict['tot_raised'] = header_data.get('net_donations')
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
+    return_dict['coverage_from_date'] = header_data.get('coverage_from_date', None)
+    return_dict['coverage_to_date'] =header_data.get('coverage_through_date', None)
     
     # This is greater than tot_raised because it's before the donations refunded... 
     return_dict['tot_contribs'] = header_data.get('total_donations_accepted')
