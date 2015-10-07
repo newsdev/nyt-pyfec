@@ -262,7 +262,7 @@ def dateparse_notnull(datestring):
     """ dateparse returns today if given an empty string. Don't do that. """
     if datestring:
         print datestring
-        datestring = datetime.strptime(datestring, '%Y%m%d').strptime('%Y-%m-%d')
+        datestring = datetime.strptime(datestring, '%Y%m%d').strftime('%Y-%m-%d')
         return datestring
     else:
         return None
