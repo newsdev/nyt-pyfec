@@ -251,7 +251,6 @@ class Filing(object):
             parsed_data = process_f13_header(summary)
                     
         else:
-            print "could not find form"
             raise NotImplementedError("Form %s processing not implemented" % self.get_form_type().upper())
         parsed_data.update(self.headers)
         parsed_data['filing_id'] = int(self.filing_number)
@@ -261,9 +260,7 @@ class Filing(object):
 def dateparse_notnull(datestring):
     """ dateparse returns today if given an empty string. Don't do that. """
     if datestring:
-        print datestring
-        datestring = datetime.strptime(datestring, '%Y%m%d').strftime('%Y-%m-%d')
-        return datestring
+        datestring = datetime.strptime(datestring, '%Y%m%d')
     else:
         return None
 
