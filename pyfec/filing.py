@@ -290,9 +290,10 @@ def process_f3x_header(header_data):
         'tot_non_ite_contribs_indivs':'individuals_unitemized'}
         
     for new_key, fec_key in field_names.items():
-        assert header_data.get('col_a_'+fec_key) != ""
-        return_dict[new_key] = header_data.get('col_a_'+fec_key)
-        totals_dict[new_key] = header_data.get('col_b_'+fec_key)
+        current_val = header_data.get('col_a_'+fec_key)
+        return_dict[new_key] = 0 if current_val == "" else current_val
+        cycle_val = header_data.get('col_b_'+fec_key)
+        totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
     
     return_dict['cycle_totals'] = totals_dict
 
