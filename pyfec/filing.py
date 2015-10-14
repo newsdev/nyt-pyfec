@@ -70,7 +70,14 @@ class Filing(object):
             self.csv_reader = csv.reader(self.fh)
         
         self.is_error = not self.parse_headers()
-        self.flat_filing = self.flatten_filing()
+        flat_filing = self.flatten_filing()
+        if 'cycle_totals' in flat_filing:
+            self.cycle_totals = flat_filing['cycle_totals']
+            del flat_filing['cycle_totals']
+        else:
+            self.cycle_totals = {}
+        self.flat_filing = flat_filing
+
 
     def get_filing(self):
         init(autoreset=True)
@@ -264,20 +271,30 @@ def dateparse_notnull(datestring):
     else:
         return None
 
+
+
 def process_f3x_header(header_data):
     return_dict = defaultdict(lambda:0)
-    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
-    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
-    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
-    return_dict['new_loans'] = header_data.get('col_a_total_loans')
-    return_dict['tot_ies'] = header_data.get('col_a_independent_expenditures')
-    return_dict['tot_coordinated'] = header_data.get('col_a_coordinated_expenditures_by_party_committees')
+    totals_dict = defaultdict(lambda:0)
+    field_names = {
+        'coh_end':'cash_on_hand_close_of_period',
+        'tot_raised':'total_receipts',
+        'tot_spent':'total_disbursements',
+        'new_loans':'total_loans',
+        'tot_ies':'independent_expenditures',
+        'tot_coordinated':'coordinated_expenditures_by_party_committees',
+        
+        'outstanding_loans':'debts_by',
+        'tot_contribs':'total_contributions',
+        'tot_ite_contribs_indivs':'individuals_itemized',
+        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
+        
+    for new_key, fec_key in field_names.items():
+        return_dict[new_key] = header_data.get('col_a_'+fec_key)
+        totals_dict[new_key] = header_data.get('col_b_'+fec_key)
     
-    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
-    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
-    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individuals_itemized')
-    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individuals_unitemized')
-    
+    return_dict['cycle_totals'] = totals_dict
+
     return return_dict
 
 def process_f3p_header(header_data):
