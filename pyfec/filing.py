@@ -272,10 +272,21 @@ def dateparse_notnull(datestring):
         return None
 
 
-
-def process_f3x_header(header_data):
+def process_header(header_data, field_names):
     return_dict = defaultdict(lambda:0)
     totals_dict = defaultdict(lambda:0)
+
+    for new_key, fec_key in field_names.items():
+        current_val = header_data.get('col_a_'+fec_key)
+        return_dict[new_key] = 0 if current_val == "" else current_val
+        cycle_val = header_data.get('col_b_'+fec_key)
+        totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
+    
+    return_dict['cycle_totals'] = totals_dict
+
+    return return_dict
+
+def process_f3x_header(header_data):
     field_names = {
         'coh_end':'cash_on_hand_close_of_period',
         'tot_raised':'total_receipts',
@@ -288,46 +299,41 @@ def process_f3x_header(header_data):
         'tot_contribs':'total_contributions',
         'tot_ite_contribs_indivs':'individuals_itemized',
         'tot_non_ite_contribs_indivs':'individuals_unitemized'}
-        
-    for new_key, fec_key in field_names.items():
-        current_val = header_data.get('col_a_'+fec_key)
-        return_dict[new_key] = 0 if current_val == "" else current_val
-        cycle_val = header_data.get('col_b_'+fec_key)
-        totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
     
-    return_dict['cycle_totals'] = totals_dict
+    return process_header(header_data, field_names)
 
-    return return_dict
 
 def process_f3p_header(header_data):
-    return_dict = defaultdict(lambda:0)
-    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
-    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
-    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
-    return_dict['new_loans'] = header_data.get('col_a_total_loans')
-    return_dict['tot_ies'] = header_data.get('col_a_independent_expenditures')
-    return_dict['tot_coordinated'] = header_data.get('col_a_coordinated_expenditures_by_party_committees')
+    field_names = {
+        'coh_end':'cash_on_hand_close_of_period',
+        'tot_raised':'total_receipts',
+        'tot_spent':'total_disbursements',
+        'new_loans':'total_loans',
+        'tot_ies':'independent_expenditures',
+        'tot_coordinated':'coordinated_expenditures_by_party_committees',
+        
+        'outstanding_loans':'debts_by',
+        'tot_contribs':'total_contributions',
+        'tot_ite_contribs_indivs':'individuals_itemized',
+        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
 
-    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
-    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
-    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individuals_itemized')
-    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individuals_unitemized')
-    
-    return return_dict
+    return process_header(header_data, field_names)
  
 def process_f3_header(header_data):
-    return_dict = defaultdict(lambda:0)
-    return_dict['coh_end'] = header_data.get('col_a_cash_on_hand_close_of_period')
-    return_dict['tot_raised'] = header_data.get('col_a_total_receipts')
-    return_dict['tot_spent'] = header_data.get('col_a_total_disbursements')
-    return_dict['new_loans'] = header_data.get('col_a_total_loans')
-    
-    return_dict['outstanding_loans'] = header_data.get('col_a_debts_by')
-    return_dict['tot_contribs'] = header_data.get('col_a_total_contributions')
-    return_dict['tot_ite_contribs_indivs'] = header_data.get('col_a_individual_contributions_itemized')
-    return_dict['tot_non_ite_contribs_indivs'] = header_data.get('col_a_individual_contributions_unitemized')
-    
-    return return_dict
+
+    field_names = {
+        'coh_end':'cash_on_hand_close_of_period',
+        'tot_raised':'total_receipts',
+        'tot_spent':'total_disbursements',
+        'new_loans':'total_loans',
+
+        'outstanding_loans':'debts_by',
+        'tot_contribs':'total_contributions',
+        'tot_ite_contribs_indivs':'individuals_itemized',
+        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
+
+    return process_header(header_data, field_names)
+
     
 def process_f5_header(header_data):
     # non-committee report of IE's
