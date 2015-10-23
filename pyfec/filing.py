@@ -256,6 +256,9 @@ class Filing(object):
         
         elif self.get_form_type().upper() in ['F13', 'F13A', 'F13N']:
             parsed_data = process_f13_header(summary)
+
+        elif self.get_form_type().upper() in ['F24']:
+            parsed_data = defaultdict(lambda:0)
                     
         else:
             raise NotImplementedError("Form %s processing not implemented" % self.get_form_type().upper())
