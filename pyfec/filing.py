@@ -265,6 +265,8 @@ class Filing(object):
         parsed_data.update(self.headers)
         parsed_data['filing_id'] = int(self.filing_number)
         parsed_data['filing_number'] = self.filing_number
+        parsed_data['filed_date'] = summary.get('date_signed')
+        print parsed_data['filed_date']
         return(parsed_data)
 
 def dateparse_notnull(datestring):
