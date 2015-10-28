@@ -229,17 +229,19 @@ class Filing(object):
             return {}
 
         summary = fp.parse_form_line(self.form_row, self.version)
+
+        form_type = self.get_form_type().upper()
         
-        if self.get_form_type().upper() in ['F3A', 'F3N', 'F3T', 'F3']:
+        if form_type in ['F3A', 'F3N', 'F3T', 'F3']:
             parsed_data = process_f3_header(summary)
         
-        elif self.get_form_type().upper() in ['F3PA', 'F3PN', 'F3PT', 'F3P']:
+        elif form_type in ['F3PA', 'F3PN', 'F3PT', 'F3P']:
             parsed_data = process_f3p_header(summary)
             
-        elif self.get_form_type().upper() in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
+        elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
             parsed_data = process_f3x_header(summary)
         
-        elif self.get_form_type().upper() in ['F5', 'F5A', 'F5N']:
+        elif form_type in ['F5', 'F5A', 'F5N']:
             parsed_data = process_f5_header(summary)
                     
             try:
@@ -248,16 +250,16 @@ class Filing(object):
                 # this is probably a problem. 
                 pass
 
-        elif self.get_form_type().upper() in ['F7', 'F7A', 'F7N']:
+        elif form_type in ['F7', 'F7A', 'F7N']:
             parsed_data = process_f7_header(summary)        
 
-        elif self.get_form_type().upper() in ['F9', 'F9A', 'F9N']:
+        elif form_type in ['F9', 'F9A', 'F9N']:
             parsed_data = process_f9_header(summary)        
         
-        elif self.get_form_type().upper() in ['F13', 'F13A', 'F13N']:
+        elif form_type in ['F13', 'F13A', 'F13N']:
             parsed_data = process_f13_header(summary)
 
-        elif self.get_form_type().upper() in ['F24']:
+        elif form_type in ['F24']:
             parsed_data = defaultdict(lambda:0)
                     
         else:
@@ -266,7 +268,11 @@ class Filing(object):
         parsed_data['filing_id'] = int(self.filing_number)
         parsed_data['filing_number'] = self.filing_number
         parsed_data['filed_date'] = summary.get('date_signed')
-        print parsed_data['filed_date']
+        parsed_data['form_type'] = form_type
+        parsed_data['coverage_from_date'] = summary.get('coverage_from_date')
+        parsed_data['coverage_through_date'] = summary.get('coverage_through_date')
+        parsed_data['committee_name'] = summary.get('committee_name')
+
         return(parsed_data)
 
 def dateparse_notnull(datestring):
