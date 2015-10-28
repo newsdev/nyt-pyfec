@@ -29,9 +29,10 @@ class Filing(object):
     """
     Represents a single filing.
     """
-    def __init__(self, filing_number, is_paper=False):
+    def __init__(self, filing_number, is_paper=False, base_url="http://docquery.fec.gov/dcdev/posted"):
         init(autoreset=True)
         print Style.BRIGHT + Fore.MAGENTA + "Getting filing " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_number
+        self.document_base_url = base_url
         self.version = None
         self.filing_lines = []
 
@@ -84,7 +85,7 @@ class Filing(object):
         if not os.path.isfile(self.local_file_location):
             print Style.BRIGHT + Fore.GREEN + " Downloading from the FEC."
 
-            constructed_url = 'http://docquery.fec.gov/dcdev/posted/%s' % self.local_file_location.split('/')[-1]
+            constructed_url = '{base_url}/{file_location}'.format(base_url=self.document_base_url, file_location=self.local_file_location.split('/')[-1])
 
             r = requests.get(constructed_url)
 
