@@ -270,7 +270,7 @@ class Filing(object):
         parsed_data['filed_date'] = summary.get('date_signed')
         parsed_data['form_type'] = form_type
         parsed_data['coverage_from_date'] = summary.get('coverage_from_date')
-        parsed_data['coverage_through_date'] = summary.get('coverage_through_date')
+        parsed_data['coverage_to_date'] = summary.get('coverage_through_date')
         parsed_data['committee_name'] = summary.get('committee_name')
 
         return(parsed_data)
