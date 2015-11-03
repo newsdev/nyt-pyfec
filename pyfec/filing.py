@@ -307,7 +307,7 @@ def process_f3x_header(header_data):
         'tot_ies':'independent_expenditures',
         'tot_coordinated':'coordinated_expenditures_by_party_committees',
         
-        'outstanding_loans':'debts_by',
+        'outstanding_debts':'debts_by',
         'tot_contribs':'total_contributions',
         'tot_ite_contribs_indivs':'individuals_itemized',
         'tot_non_ite_contribs_indivs':'individuals_unitemized'}
@@ -324,7 +324,7 @@ def process_f3p_header(header_data):
         'tot_ies':'independent_expenditures',
         'tot_coordinated':'coordinated_expenditures_by_party_committees',
         
-        'outstanding_loans':'debts_by',
+        'outstanding_debts':'debts_by',
         'tot_contribs':'total_contributions',
         'tot_ite_contribs_indivs':'individuals_itemized',
         'tot_non_ite_contribs_indivs':'individuals_unitemized'}
@@ -339,7 +339,7 @@ def process_f3_header(header_data):
         'tot_spent':'total_disbursements',
         'new_loans':'total_loans',
 
-        'outstanding_loans':'debts_by',
+        'outstanding_debts':'debts_by',
         'tot_contribs':'total_contributions',
         'tot_ite_contribs_indivs':'individuals_itemized',
         'tot_non_ite_contribs_indivs':'individuals_unitemized'}
