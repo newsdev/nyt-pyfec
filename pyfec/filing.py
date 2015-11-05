@@ -306,8 +306,8 @@ def process_f3x_header(header_data):
         'new_loans':'total_loans',
         'tot_ies':'independent_expenditures',
         'tot_coordinated':'coordinated_expenditures_by_party_committees',
-        'tot_parties':'col_a_political_party_committees',
-        'tot_nonparty_comms':'col_a_other_political_committees_pacs',
+        'tot_parties':'political_party_committees',
+        'tot_nonparty_comms':'other_political_committees_pacs',
         
         'outstanding_debts':'debts_by',
         'tot_contribs':'total_contributions',
@@ -325,9 +325,9 @@ def process_f3p_header(header_data):
         'new_loans':'total_loans',
         'tot_ies':'independent_expenditures',
         'tot_coordinated':'coordinated_expenditures_by_party_committees',
-        'tot_parties':'col_a_political_party_committees',
-        'tot_nonparty_comms':'col_a_other_political_committees_pacs',
-        'tot_candidate':'col_a_the_candidate',
+        'tot_parties':'political_party_committees',
+        'tot_nonparty_comms':'other_political_committees_pacs',
+        'tot_candidate':'the_candidate',
 
         'outstanding_debts':'debts_by',
         'tot_contribs':'total_contributions',
