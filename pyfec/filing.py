@@ -37,7 +37,7 @@ class Filing(object):
         self.filing_lines = []
 
         self.is_amendment = None
-        self.filing_amended = None
+        self.amends_filing = None
 
         self.page_read = None
         self.headers = {}
@@ -142,14 +142,14 @@ class Filing(object):
             self.headers['is_amendment'] = self.is_amendment
             
             if self.is_paper:
-                self.headers['filing_amended'] = None
+                self.headers['amends_filing'] = None
 
             else:
                 amendment_match = re.search('^FEC\s*-\s*(\d+)', self.headers['report_id'])
     
                 if amendment_match:
                     original = amendment_match.group(1)
-                    self.headers['filing_amended'] = original
+                    self.headers['amends_filing'] = original
 
                 else:
                     raise Exception("Can't find original filing in amended report %s" % (self.filing_number))
