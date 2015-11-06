@@ -121,7 +121,7 @@ class Filing(object):
         self.form_row = summary_line
 
         self.headers = header.parse(header_arr, self.is_paper)
-        self.headers['filing_amended'] = None
+        self.headers['amends_filing'] = None
         self.headers['report_num'] = None
         self.version = self.headers['fec_version']
 

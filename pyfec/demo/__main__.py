@@ -32,7 +32,7 @@ for this_file in files:
     print Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (filing_dict['version'])
 
     if f1.is_amendment:
-        print Style.BRIGHT + Fore.GREEN + " Amends filing: " + Style.BRIGHT + Fore.YELLOW + "%s" % (f1.headers['filing_amended'])
+        print Style.BRIGHT + Fore.GREEN + " Amends filing: " + Style.BRIGHT + Fore.YELLOW + "%s" % (f1.headers['amends_filing'])
 
     if not fp.is_allowed_form(filing_dict['formtype']):
         print Style.BRIGHT + Fore.RED + " Not parseable: " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_dict['formtype']
