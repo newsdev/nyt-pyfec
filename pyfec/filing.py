@@ -59,7 +59,6 @@ class Filing(object):
 
         self.get_filing()
 
-        print self.local_file_location
         self.fh = open(self.local_file_location, 'r')
 
         # The header row indicates what type of file this is.
