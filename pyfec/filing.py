@@ -29,7 +29,10 @@ class Filing(object):
     """
     Represents a single filing.
     """
-    def __init__(self, filing_number, is_paper=False, base_url="http://docquery.fec.gov/dcdev/posted"):
+    def __init__(self, filing_number, is_paper=False, base_url="http://docquery.fec.gov/dcdev/posted", local_copy=None):
+        #local_copy is an absolute path to a local copy of the filing, useful for testing
+        #or mucking around while offline.
+
         init(autoreset=True)
         print Style.BRIGHT + Fore.MAGENTA + "Getting filing " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_number
         self.document_base_url = base_url
@@ -49,7 +52,10 @@ class Filing(object):
         self.filing_number = filing_number
         self.is_paper = is_paper
         self.headers['filing_number'] = filing_number
-        self.local_file_location = "/tmp/%s.fec" % self.filing_number
+        if local_copy is None:
+            self.local_file_location = "/tmp/%s.fec" % self.filing_number
+        else:
+            self.local_file_location = local_copy
 
         self.get_filing()
 
