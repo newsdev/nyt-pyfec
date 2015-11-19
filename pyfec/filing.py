@@ -304,56 +304,46 @@ def process_header(header_data, field_names):
 
     return return_dict
 
-def process_f3x_header(header_data):
+def f3_common_fields():
     field_names = {
         'coh_end':'cash_on_hand_close_of_period',
-        'tot_raised':'total_receipts',
-        'tot_spent':'total_disbursements',
+        'total_receipts':'total_receipts',
+        'total_disbursements':'total_disbursements',
         'new_loans':'total_loans',
-        'tot_ies':'independent_expenditures',
-        'tot_coordinated':'coordinated_expenditures_by_party_committees',
-        'tot_parties':'political_party_committees',
-        'tot_nonparty_comms':'other_political_committees_pacs',
-        
+
         'outstanding_debts':'debts_by',
-        'tot_contribs':'total_contributions',
-        'tot_ite_contribs_indivs':'individuals_itemized',
-        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
+        'total_contributions':'total_contributions',
+        'total_unitemized_indiv':'individuals_itemized',
+        'total_itemized_indiv':'individuals_unitemized'}
+    return field_names
+
+def process_f3x_header(header_data):
+    field_names = {
+        'total_ies':'independent_expenditures',
+        'total_coordinated':'coordinated_expenditures_by_party_committees',
+        'total_parties':'political_party_committees',
+        'total_nonparty_comms':'other_political_committees_pacs'}
+
+    field_names.update(f3_common_fields())
     
     return process_header(header_data, field_names)
 
 
 def process_f3p_header(header_data):
     field_names = {
-        'coh_end':'cash_on_hand_close_of_period',
-        'tot_raised':'total_receipts',
-        'tot_spent':'total_disbursements',
-        'new_loans':'total_loans',
-        'tot_ies':'independent_expenditures',
-        'tot_coordinated':'coordinated_expenditures_by_party_committees',
-        'tot_parties':'political_party_committees',
-        'tot_nonparty_comms':'other_political_committees_pacs',
-        'tot_candidate':'the_candidate',
+        'total_ies':'independent_expenditures',
+        'total_coordinated':'coordinated_expenditures_by_party_committees',
+        'total_parties':'political_party_committees',
+        'total_nonparty_comms':'other_political_committees_pacs',
+        'total_candidate':'the_candidate'}
 
-        'outstanding_debts':'debts_by',
-        'tot_contribs':'total_contributions',
-        'tot_ite_contribs_indivs':'individuals_itemized',
-        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
+    field_names.update(f3_common_fields())
 
     return process_header(header_data, field_names)
  
 def process_f3_header(header_data):
 
-    field_names = {
-        'coh_end':'cash_on_hand_close_of_period',
-        'tot_raised':'total_receipts',
-        'tot_spent':'total_disbursements',
-        'new_loans':'total_loans',
-
-        'outstanding_debts':'debts_by',
-        'tot_contribs':'total_contributions',
-        'tot_ite_contribs_indivs':'individuals_itemized',
-        'tot_non_ite_contribs_indivs':'individuals_unitemized'}
+    field_names = f3_common_fields()
 
     return process_header(header_data, field_names)
 
@@ -361,11 +351,11 @@ def process_f3_header(header_data):
 def process_f5_header(header_data):
     # non-committee report of IE's
     return_dict= defaultdict(lambda:0)
-    return_dict['tot_raised'] = header_data.get('total_contribution')
-    return_dict['tot_spent'] = header_data.get('total_independent_expenditure')  
+    return_dict['total_receipts'] = header_data.get('total_contribution')
+    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure')  
 
     # This usually isn't reported, but... 
-    return_dict['tot_contribs'] = header_data.get('total_contribution')
+    return_dict['total_contributions'] = header_data.get('total_contribution')
     
     # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
@@ -376,7 +366,7 @@ def process_f5_header(header_data):
 def process_f7_header(header_data):
     # communication cost    
     return_dict= defaultdict(lambda:0)
-    return_dict['tot_spent'] = header_data.get('total_costs')    
+    return_dict['total_disbursements'] = header_data.get('total_costs')    
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
@@ -385,23 +375,23 @@ def process_f7_header(header_data):
 def process_f9_header(header_data):
     # electioneering 
     return_dict= defaultdict(lambda:0)
-    return_dict['tot_raised'] = header_data.get('total_donations')
-    return_dict['tot_spent'] = header_data.get('total_disbursements')    
+    return_dict['total_receipts'] = header_data.get('total_donations')
+    return_dict['total_disbursements'] = header_data.get('total_disbursements')    
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # typically not reported... 
-    return_dict['tot_contribs'] = header_data.get('total_donations')
+    return_dict['total_contributions'] = header_data.get('total_donations')
     
     return return_dict
 
 def process_f13_header(header_data):
     # donations to inaugural committee
     return_dict= defaultdict(lambda:0)
-    return_dict['tot_raised'] = header_data.get('net_donations')
+    return_dict['total_receipts'] = header_data.get('net_donations')
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # This is greater than tot_raised because it's before the donations refunded... 
-    return_dict['tot_contribs'] = header_data.get('total_donations_accepted')
+    return_dict['total_contributions'] = header_data.get('total_donations_accepted')
     return return_dict
