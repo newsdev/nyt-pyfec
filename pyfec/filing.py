@@ -239,46 +239,62 @@ class Filing(object):
 
         form_type = self.get_form_type().upper()
         
-        if form_type in ['F3A', 'F3N', 'F3T', 'F3']:
-            parsed_data = process_f3_header(summary)
+        # if form_type in ['F3A', 'F3N', 'F3T', 'F3']:
+        #     parsed_data = process_f3_header(summary)
         
-        elif form_type in ['F3PA', 'F3PN', 'F3PT', 'F3P']:
-            parsed_data = process_f3p_header(summary)
+        # elif form_type in ['F3PA', 'F3PN', 'F3PT', 'F3P']:
+        #     parsed_data = process_f3p_header(summary)
             
-        elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
-            parsed_data = process_f3x_header(summary)
+        # elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
+        #     parsed_data = process_f3x_header(summary)
         
-        elif form_type in ['F5', 'F5A', 'F5N']:
-            parsed_data = process_f5_header(summary)
+        # elif form_type in ['F5', 'F5A', 'F5N']:
+        #     parsed_data = process_f5_header(summary)
                     
-            try:
-                self.is_f5_quarterly = summary['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
-            except KeyError:
-                # this is probably a problem. 
-                pass
+        #     try:
+        #         self.is_f5_quarterly = summary['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        #     except KeyError:
+        #         # this is probably a problem. 
+        #         pass
 
-        elif form_type in ['F7', 'F7A', 'F7N']:
-            parsed_data = process_f7_header(summary)        
+        # elif form_type in ['F7', 'F7A', 'F7N']:
+        #     parsed_data = process_f7_header(summary)        
 
-        elif form_type in ['F9', 'F9A', 'F9N']:
-            parsed_data = process_f9_header(summary)        
+        # elif form_type in ['F9', 'F9A', 'F9N']:
+        #     parsed_data = process_f9_header(summary)        
         
-        elif form_type in ['F13', 'F13A', 'F13N']:
-            parsed_data = process_f13_header(summary)
+        # elif form_type in ['F13', 'F13A', 'F13N']:
+        #     parsed_data = process_f13_header(summary)
 
-        elif form_type in ['F24']:
-            parsed_data = defaultdict(lambda:0)
+        # elif form_type in ['F24']:
+        #     parsed_data = defaultdict(lambda:0)
                     
-        else:
-            raise NotImplementedError("Form %s processing not implemented" % self.get_form_type().upper())
-        parsed_data.update(self.headers)
+        # else:
+        #     raise NotImplementedError("Form %s processing not implemented" % self.get_form_type().upper())
+        # parsed_data.update(self.headers)
+
+        parsed_data = {}
         parsed_data['filing_id'] = int(self.filing_number)
         parsed_data['filing_number'] = self.filing_number
-        parsed_data['filed_date'] = summary.get('date_signed')
         parsed_data['form_type'] = form_type
-        parsed_data['coverage_from_date'] = summary.get('coverage_from_date')
-        parsed_data['coverage_to_date'] = summary.get('coverage_through_date')
-        parsed_data['committee_name'] = summary.get('committee_name')
+
+        fields_to_skip = []
+
+        for field, val in summary.items():
+            if field.startswith('col_a_'):
+                parsed_data[field.strip('col_a_')] = val
+            elif field.startswith('col_b_'):
+                if not 'cycle_totals' in parsed_data:
+                    parsed_data['cycle_totals'] = {}
+                parsed_data['cycle_totals'][field.strip('col_b_')] = val
+            elif field = 'date_signed':
+                parsed_data['filed_date'] = val
+            elif field = 'coverage_through_date':
+                parsed_data['coverage_to_date'] = val
+            elif field in fields_to_skip:
+                continue
+            else:
+                parsed_data[field] = val
 
         return(parsed_data)
 
