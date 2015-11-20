@@ -296,9 +296,11 @@ def process_header(header_data, field_names):
 
     for new_key, fec_key in field_names.items():
         current_val = header_data.get('col_a_'+fec_key)
-        return_dict[new_key] = 0 if current_val == "" else current_val
+        if current_val is not None:
+            return_dict[new_key] = 0 if current_val == "" else current_val
         cycle_val = header_data.get('col_b_'+fec_key)
-        totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
+        if cycle_val is not None:
+            totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
     
     return_dict['cycle_totals'] = totals_dict
 
