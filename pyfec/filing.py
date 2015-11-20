@@ -78,6 +78,7 @@ class Filing(object):
         
         self.is_error = not self.parse_headers()
         flat_filing = self.flatten_filing()
+        print flat_filing
         if 'cycle_totals' in flat_filing:
             self.cycle_totals = flat_filing['cycle_totals']
             del flat_filing['cycle_totals']
