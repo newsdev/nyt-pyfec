@@ -287,9 +287,9 @@ class Filing(object):
                 if not 'cycle_totals' in parsed_data:
                     parsed_data['cycle_totals'] = {}
                 parsed_data['cycle_totals'][field.strip('col_b_')] = val
-            elif field = 'date_signed':
+            elif field == 'date_signed':
                 parsed_data['filed_date'] = val
-            elif field = 'coverage_through_date':
+            elif field == 'coverage_through_date':
                 parsed_data['coverage_to_date'] = val
             elif field in fields_to_skip:
                 continue
