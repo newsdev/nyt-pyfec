@@ -78,7 +78,7 @@ class Filing(object):
         
         self.is_error = not self.parse_headers()
         flat_filing = self.flatten_filing()
-        print flat_filing
+
         if 'cycle_totals' in flat_filing:
             self.cycle_totals = flat_filing['cycle_totals']
             del flat_filing['cycle_totals']
@@ -283,11 +283,11 @@ class Filing(object):
 
         for field, val in summary.items():
             if field.startswith('col_a_'):
-                parsed_data[field.strip('col_a_')] = val
+                parsed_data[field.replace('col_a_','')] = val
             elif field.startswith('col_b_'):
                 if not 'cycle_totals' in parsed_data:
                     parsed_data['cycle_totals'] = {}
-                parsed_data['cycle_totals'][field.strip('col_b_')] = val
+                parsed_data['cycle_totals'][field.replace('col_b_','')] = val
             elif field == 'date_signed':
                 parsed_data['filed_date'] = val
             elif field == 'coverage_through_date':
