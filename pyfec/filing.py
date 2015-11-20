@@ -313,8 +313,8 @@ def f3_common_fields():
 
         'outstanding_debts':'debts_by',
         'total_contributions':'total_contributions',
-        'total_unitemized_indiv':'individuals_itemized',
-        'total_itemized_indiv':'individuals_unitemized'}
+        'total_unitemized_indiv':'individuals_unitemized',
+        'total_itemized_indiv':'individuals_itemized'}
     return field_names
 
 def process_f3x_header(header_data):
