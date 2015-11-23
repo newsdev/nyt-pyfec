@@ -312,11 +312,28 @@ def f3_common_fields():
         'total_receipts':'total_receipts',
         'total_disbursements':'total_disbursements',
         'new_loans':'total_loans',
+        'total_contributions_indiv':'individual_contribution_total',
 
         'outstanding_debts':'debts_by',
         'total_contributions':'total_contributions',
         'total_unitemized_indiv':'individuals_unitemized',
-        'total_itemized_indiv':'individuals_itemized'}
+        'total_itemized_indiv':'individuals_itemized',
+        'operating_offsets':'operating',
+        'fundraising_offsets':'fundraising',
+        'legal_offsets':'legal_and_accounting',
+        'total_offsets':'total_offsets_to_expenditures',
+        'total_operating_expenditures':'operating_expenditures',
+        'total_transfers_to_auth_comms':'transfers_to_other_authorized_committees',
+        'total_fundraising_disbursements':'fundraising_disbursements',
+        'total_exempt_legal_disbursements':'exempt_legal_accounting_disbursement',
+        'total_loan_repayments':'total_loan_repayments_made',
+        'refunds_to_individuals':'individuals',
+        'refunds_to_parties':'political_party_committees_refunds',
+        'refunds_to_nonparty_comms':'other_political_committees',
+        'total_refunds':'total_contributions_refunds',
+        'other_disbursements':'other_disbursements',
+        'objects_to_be_liquidated':'items_on_hand_to_be_liquidated'}
+
     return field_names
 
 def process_f3x_header(header_data):
@@ -337,7 +354,11 @@ def process_f3p_header(header_data):
         'total_coordinated':'coordinated_expenditures_by_party_committees',
         'total_parties':'political_party_committees',
         'total_nonparty_comms':'other_political_committees_pacs',
-        'total_candidate':'the_candidate'}
+        'total_candidate':'the_candidate',
+        'loans_from_candidate':'received_from_or_guaranteed_by_cand',
+        'noncandidate_loans':'other_loans',
+        'loan_repayments_by_candidate':'made_or_guaranteed_by_candidate',
+        'noncandidate_loan_repayments':'other_repayments'}
 
     field_names.update(f3_common_fields())
 
