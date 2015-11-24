@@ -321,18 +321,15 @@ def f3_common_fields():
         'operating_offsets':'operating',
         'fundraising_offsets':'fundraising',
         'legal_offsets':'legal_and_accounting',
-        'total_offsets':'total_offsets_to_expenditures',
-        'total_operating_expenditures':'operating_expenditures',
+        
         'total_transfers_to_auth_comms':'transfers_to_other_authorized_committees',
         'total_fundraising_disbursements':'fundraising_disbursements',
         'total_exempt_legal_disbursements':'exempt_legal_accounting_disbursement',
         'total_loan_repayments':'total_loan_repayments_made',
-        'refunds_to_individuals':'individuals',
-        'refunds_to_parties':'political_party_committees_refunds',
-        'refunds_to_nonparty_comms':'other_political_committees',
-        'total_refunds':'total_contributions_refunds',
+        
         'other_disbursements':'other_disbursements',
-        'objects_to_be_liquidated':'items_on_hand_to_be_liquidated'}
+        'objects_to_be_liquidated':'items_on_hand_to_be_liquidated',
+        'total_parties':'political_party_committees'}
 
     return field_names
 
@@ -340,8 +337,35 @@ def process_f3x_header(header_data):
     field_names = {
         'total_ies':'independent_expenditures',
         'total_coordinated':'coordinated_expenditures_by_party_committees',
-        'total_parties':'political_party_committees',
-        'total_nonparty_comms':'other_political_committees_pacs'}
+        'total_nonparty_comms':'other_political_committees_pacs',
+        'total_loan_repayments_received':'total_loan_repayments_received',
+        'total_offsets':'offsets_to_expenditures',
+        'other_federal_receipts':'other_federal_receipts',
+        'transfers_from_nonfederal_h3':'transfers_from_nonfederal_h3',
+        'levin_funds':'levin_funds',
+        'total_nonfederal_transfers':'total_nonfederal_transfers',
+        'total_federal_receipts':'total_federal_receipts',
+        'shared_operating_expenditures_federal':'shared_operating_expenditures_federal',
+        'shared_operating_expenditures_nonfederal':'shared_operating_expenditures_nonfederal',
+        'other_federal_operating_expenditures':'other_federal_operating_expenditures',
+        'total_operating_expenditures':'total_operating_expenditures',
+        'transfers_to_affiliated':'transfers_to_affiliated',
+        'contributions_to_candidates':'contributions_to_candidates',
+        'independent_expenditures':'independent_expenditures',
+        'coordinated_expenditures_by_party_committees':'coordinated_expenditures_by_party_committees',
+        'loans_made':'loans_made',
+        'refunds_to_individuals':'refunds_to_individuals',
+        'refunds_to_parties':'refunds_to_party_committees',
+        'refunds_to_nonparty_comms':'refunds_to_other_committees',
+        'total_refunds':'total_refunds',
+        'federal_election_activity_federal_share':'federal_election_activity_federal_share',
+        'federal_election_activity_levin_share':'federal_election_activity_levin_share',
+        'federal_election_activity_all_federal':'federal_election_activity_all_federal',
+        'federal_election_activity_total':'federal_election_activity_total',
+        'total_federal_disbursements':'total_federal_disbursements',
+        'total_federal_operating_expenditures':'total_federal_operating_expenditures'
+
+        }
 
     field_names.update(f3_common_fields())
     
@@ -358,7 +382,13 @@ def process_f3p_header(header_data):
         'loans_from_candidate':'received_from_or_guaranteed_by_cand',
         'noncandidate_loans':'other_loans',
         'loan_repayments_by_candidate':'made_or_guaranteed_by_candidate',
-        'noncandidate_loan_repayments':'other_repayments'}
+        'noncandidate_loan_repayments':'other_repayments',
+        'total_offsets':'total_offsets_to_expenditures',
+        'refunds_to_parties':'political_party_committees_refunds',
+        'refunds_to_nonparty_comms':'other_political_committees',
+        'refunds_to_individuals':'individuals',
+        'total_operating_expenditures':'operating_expenditures',
+        'total_refunds':'total_contributions_refunds',}
 
     field_names.update(f3_common_fields())
 
