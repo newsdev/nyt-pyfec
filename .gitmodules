@@ -1,3 +1,0 @@
-[submodule "pyfec/fec-csv-sources"]
-	path = pyfec/fec-csv-sources
-	url = git@github.com:newsdev/fec-csv-sources.git
