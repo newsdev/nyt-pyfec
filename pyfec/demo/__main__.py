@@ -12,7 +12,7 @@ from pyfec import filing
 fp = form.Form()
 fec_format_file = re.compile(r'\d+\.fec')
 
-files = ['1024610', '1024649', '1026340', '1026311']
+files = ['1024610', '1029571', '1026340', '1026311']
 init(autoreset=True)
 
 start = datetime.datetime.now()
