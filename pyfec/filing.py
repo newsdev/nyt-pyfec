@@ -280,8 +280,6 @@ class Filing(object):
         parsed_data['coverage_to_date'] = summary.get('coverage_through_date')
         parsed_data['committee_name'] = summary.get('committee_name')
 
-        print parsed_data
-
         return(parsed_data)
 
 def dateparse_notnull(datestring):
@@ -293,7 +291,6 @@ def dateparse_notnull(datestring):
 
 
 def process_header(header_data, field_names):
-    print header_data
     return_dict = defaultdict(lambda:0)
     totals_dict = defaultdict(lambda:0)
 
