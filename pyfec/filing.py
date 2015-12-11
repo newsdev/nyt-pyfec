@@ -359,6 +359,7 @@ def process_f3x_header(header_data):
         'refunds_to_parties':'refunds_to_party_committees',
         'refunds_to_nonparty_comms':'refunds_to_other_committees',
         'total_refunds':'total_refunds',
+        'federal_refunds':'total_contributions_refunds',
         'federal_election_activity_federal_share':'federal_election_activity_federal_share',
         'federal_election_activity_levin_share':'federal_election_activity_levin_share',
         'federal_election_activity_all_federal':'federal_election_activity_all_federal',
