@@ -264,7 +264,7 @@ def skede_from_skededict(line_dict, filing_number, line_sequence, is_amended):
     except:
         pass
     try: 
-        line_dict['signed_date_formatted'] = parser.parse(line_dict['signed_date'])
+        line_dict['date_signed_formatted'] = parser.parse(line_dict['date_signed'])
     except:
         pass
     return line_dict
@@ -280,7 +280,7 @@ def skede_from_f57(line_dict, filing_number, line_sequence, is_amended):
         except ValueError:
             pass
     try: 
-        line_dict['signed_date_formatted'] = parser.parse(line_dict['signed_date'])
+        line_dict['date_signed_formatted'] = parser.parse(line_dict['date_signed'])
     except:
         pass
     return line_dict
