@@ -263,6 +263,10 @@ def skede_from_skededict(line_dict, filing_number, line_sequence, is_amended):
         line_dict['effective_date'] = line_dict['dissemination_date_formatted']
     except:
         pass
+    try: 
+        line_dict['signed_date_formatted'] = parser.parse(line_dict['signed_date'])
+    except:
+        pass
     return line_dict
 
 def skede_from_f57(line_dict, filing_number, line_sequence, is_amended):
@@ -275,6 +279,10 @@ def skede_from_f57(line_dict, filing_number, line_sequence, is_amended):
             line_dict['expenditure_date_formatted'] = parser.parse(line_dict['expenditure_date'])
         except ValueError:
             pass
+    try: 
+        line_dict['signed_date_formatted'] = parser.parse(line_dict['signed_date'])
+    except:
+        pass
     return line_dict
 
 def otherline_from_line(line_dict, filing_number, line_sequence, is_amended, filer_id):
