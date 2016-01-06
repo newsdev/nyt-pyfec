@@ -166,7 +166,7 @@ class Form(BaseParser):
         }
         # The regex parsers must be tested in a certain order and must be an exact match, since it will use the
         # resulting headers as the keys in the output dictionaries.
-        self.regex_tuple = ('^SA3L','^SA','^SB','^SC1','^SC2','^SC','^SD','^SE','^SF','^F3X[A|N|T]','^F3P[A|N|T]','^F3S','^F3[A|N|T]$','^F91','^F92','^F93','^F94','^F9','^F6[A|N]*$','^F65','^F57','^F56','^F5','^TEXT','^F24','^H1','^H2','^H3','^H4','^H5','^H6','^SL','^F3PS','^F76$','^F7[A|N]$','^F4[A|N|T]','^F3L[A|N]','^F13[A|N]$','^F132','^F133')
+        self.regex_tuple = ('^SA3L','^SA','^SB','^SC1','^SC2','^SC','^SD','^SE','^SF','^F3X[A|N|T]','^F3P[A|N|T]','^F3S','^F3[A|N|T]$','^F91','^F92','^F93','^F94','^F99','^F9','^F6[A|N]*$','^F65','^F57','^F56','^F5','^TEXT','^F24','^H1','^H2','^H3','^H4','^H5','^H6','^SL','^F3PS','^F76$','^F7[A|N]$','^F4[A|N|T]','^F3L[A|N]','^F13[A|N]$','^F132','^F133')
 
 
 class PaperForm(BaseParser):
