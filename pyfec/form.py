@@ -63,6 +63,7 @@ class Form(BaseParser):
             'F4':1,
             'F3L':1,
             'F13':1,
+            'F99':1,
         }
         # F3P periodic presidential filing
         f3p = line.Line('F3P')
