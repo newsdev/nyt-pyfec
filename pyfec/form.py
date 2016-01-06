@@ -97,6 +97,8 @@ class Form(BaseParser):
         f92 = line.Line('F92')
         f93 = line.Line('F93')
         f94 = line.Line('F94')
+        #F99 -- MISC
+        f99 = line.Line('F99')
         # IE report by non-committee, roughly
         f5 = line.Line('F5')
         f56 = line.Line('F56')
