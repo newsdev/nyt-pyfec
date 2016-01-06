@@ -272,7 +272,6 @@ class Filing(object):
         else:
             raise NotImplementedError("Form %s processing not implemented" % self.get_form_type().upper())
 
-        print summary
         parsed_data.update(self.headers)
         parsed_data['filing_id'] = int(self.filing_number)
         parsed_data['filing_number'] = self.filing_number
