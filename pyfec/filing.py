@@ -266,7 +266,7 @@ class Filing(object):
         elif form_type in ['F13', 'F13A', 'F13N']:
             parsed_data = process_f13_header(summary)
 
-        elif form_type in ['F24', 'F99']:
+        elif form_type in ['F24', 'F99', 'F3L']:
             parsed_data = defaultdict(lambda:0)
                     
         else:
