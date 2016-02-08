@@ -64,26 +64,33 @@ class Filing(object):
         # The header row indicates what type of file this is.
         self.header_row = self.fh.readline()
 
-        # Check for a delimiter. 
-        if self.header_row.find(new_delimiter) > -1:
-            self.use_new_delimiter = True
-            self.headers_list = new_headers
-            self.fh.seek(0)
+        #make sure it's not so old we don't know what to do with it
+        if self.header_row.startswith('/*'):
+            print Style.BRIGHT + Fore.RED + "This filing is very old and has a totally depricated header format, skipping"
+            self.flat_filing = None
+
+        else:
+
+            # Check for a delimiter. 
+            if self.header_row.find(new_delimiter) > -1:
+                self.use_new_delimiter = True
+                self.headers_list = new_headers
+                self.fh.seek(0)
+                
+            else:
+                self.use_new_delimiter = False
+                self.headers_list = old_headers
+                self.fh.seek(0)
+                self.csv_reader = csv.reader(self.fh)
             
-        else:
-            self.use_new_delimiter = False
-            self.headers_list = old_headers
-            self.fh.seek(0)
-            self.csv_reader = csv.reader(self.fh)
-        
-        self.is_error = not self.parse_headers()
-        flat_filing = self.flatten_filing()
-        if 'cycle_totals' in flat_filing:
-            self.cycle_totals = flat_filing['cycle_totals']
-            del flat_filing['cycle_totals']
-        else:
-            self.cycle_totals = {}
-        self.flat_filing = flat_filing
+            self.is_error = not self.parse_headers()
+            flat_filing = self.flatten_filing()
+            if 'cycle_totals' in flat_filing:
+                self.cycle_totals = flat_filing['cycle_totals']
+                del flat_filing['cycle_totals']
+            else:
+                self.cycle_totals = {}
+            self.flat_filing = flat_filing
 
 
     def get_filing(self):
