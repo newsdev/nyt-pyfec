@@ -325,6 +325,10 @@ def transform_line(line_dict, flat_filing):
     elif line_dict['form_parser'] == 'SchE':
         return ('E', skede_from_skededict(line_dict, filing_id, line_sequence, is_amended))
 
+    elif line_dict['form_parser'] == 'SchA3L':
+        #these look very similar to skedA's
+        return ('A3L', skeda_from_skedadict(line_dict, filing_id, line_sequence, is_amended))
+
     # Treat 48-hour contribution notices like sked A.
     # Requires special handling for amendment, since these are superceded by regular F3 forms. 
     elif line_dict['form_parser'] == 'F65':
