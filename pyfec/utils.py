@@ -253,6 +253,13 @@ def skede_from_skededict(line_dict, filing_number, line_sequence, is_amended):
     # The switch from v.8 to v.8.1 added a 'dissemination date' though it kept the expenditure date.
     # We now prefer the dissemination date, but fall back to the expenditure date if it's not available.
     # The spec says that not having either is an error. 
+    if not line_dict['expenditure_amount']:
+        line_dict['expenditure_amount'] = None
+
+    if not line_dict['calendar_y_t_d_per_election_office']:
+        line_dict['calendar_y_t_d_per_election_office'] = None
+    
+
     try:
         line_dict['expenditure_date_formatted'] = parser.parse(line_dict['expenditure_date'])
         line_dict['effective_date'] = line_dict['expenditure_date_formatted']
