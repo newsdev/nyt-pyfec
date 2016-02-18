@@ -254,10 +254,10 @@ def skede_from_skededict(line_dict, filing_number, line_sequence, is_amended):
     # We now prefer the dissemination date, but fall back to the expenditure date if it's not available.
     # The spec says that not having either is an error. 
     if not line_dict['expenditure_amount']:
-        line_dict['expenditure_amount'] = 0
+        line_dict['expenditure_amount'] = None
 
     if not line_dict['calendar_y_t_d_per_election_office']:
-        line_dict['calendar_y_t_d_per_election_office'] = 0
+        line_dict['calendar_y_t_d_per_election_office'] = None
     
 
     try:
