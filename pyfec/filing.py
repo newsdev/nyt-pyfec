@@ -422,11 +422,11 @@ def process_f5_header(header_data):
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
     
-    if return_dict['total_receipts'] = "":
+    if return_dict['total_receipts'] == "":
         return_dict['total_receipts'] = None
-    if return_dict['total_contributions'] = "":
+    if return_dict['total_contributions'] == "":
         return_dict['total_contributions'] = None
-    if return_dict['total_disbursements'] = "":
+    if return_dict['total_disbursements'] == "":
         return_dict['total_disbursements'] = None
 
     return return_dict
