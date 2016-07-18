@@ -305,13 +305,9 @@ def process_header(header_data, field_names):
         current_val = header_data.get('col_a_'+fec_key)
         if current_val is not None:
             return_dict[new_key] = 0 if current_val == "" else current_val
-        else:
-            return_dict[new_key] = 0
         cycle_val = header_data.get('col_b_'+fec_key)
         if cycle_val is not None:
             totals_dict[new_key] = 0 if cycle_val == "" else cycle_val
-        else:
-            totals_dict[new_key] = 0
     
     return_dict['cycle_totals'] = totals_dict
 
@@ -416,54 +412,54 @@ def process_f3_header(header_data):
 def process_f5_header(header_data):
     # non-committee report of IE's
     return_dict= defaultdict(lambda:0)
-    return_dict['total_receipts'] = header_data.get('total_contribution') or 0
-    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure') or 0
+    return_dict['total_receipts'] = header_data.get('total_contribution')
+    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure')  
 
     # This usually isn't reported, but... 
-    return_dict['total_contributions'] = header_data.get('total_contribution') or 0
+    return_dict['total_contributions'] = header_data.get('total_contribution')
     
     # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date')) or 0
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date')) or 0 
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
     
     if return_dict['total_receipts'] == "":
-        return_dict['total_receipts'] = 0
+        return_dict['total_receipts'] = None
     if return_dict['total_contributions'] == "":
-        return_dict['total_contributions'] = 0
+        return_dict['total_contributions'] = None
     if return_dict['total_disbursements'] == "":
-        return_dict['total_disbursements'] = 0
+        return_dict['total_disbursements'] = None
 
     return return_dict
     
 def process_f7_header(header_data):
     # communication cost    
     return_dict= defaultdict(lambda:0)
-    return_dict['total_disbursements'] = header_data.get('total_costs') or 0
-    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date')) or 0
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date')) or 0
+    return_dict['total_disbursements'] = header_data.get('total_costs')    
+    return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     return return_dict
 
 def process_f9_header(header_data):
     # electioneering 
     return_dict= defaultdict(lambda:0)
-    return_dict['total_receipts'] = header_data.get('total_donations') or 0
-    return_dict['total_disbursements'] = header_data.get('total_disbursements') or 0   
+    return_dict['total_receipts'] = header_data.get('total_donations')
+    return_dict['total_disbursements'] = header_data.get('total_disbursements')    
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # typically not reported... 
-    return_dict['total_contributions'] = header_data.get('total_donations') or 0
+    return_dict['total_contributions'] = header_data.get('total_donations')
     
     return return_dict
 
 def process_f13_header(header_data):
     # donations to inaugural committee
     return_dict= defaultdict(lambda:0)
-    return_dict['total_receipts'] = header_data.get('net_donations') or 0
+    return_dict['total_receipts'] = header_data.get('net_donations')
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))
     
     # This is greater than tot_raised because it's before the donations refunded... 
-    return_dict['total_contributions'] = header_data.get('total_donations_accepted') or 0
+    return_dict['total_contributions'] = header_data.get('total_donations_accepted')
     return return_dict
