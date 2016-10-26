@@ -29,6 +29,7 @@ class Filing(object):
     """
     Represents a single filing.
     """
+
     def __init__(self, filing_number, is_paper=False, base_url="http://docquery.fec.gov/dcdev/posted", local_copy=None):
         #local_copy is an absolute path to a local copy of the filing, useful for testing
         #or mucking around while offline.
@@ -96,14 +97,8 @@ class Filing(object):
             print Style.BRIGHT + Fore.GREEN + " Downloading from the FEC."
 
             constructed_url = '{base_url}/{file_location}'.format(base_url=self.document_base_url, file_location=self.local_file_location.split('/')[-1])
-
-            r = requests.get(constructed_url)
-
-            if r.status_code == 200:
-                with open(self.local_file_location, 'w') as writefile:
-                    writefile.write(r.content)
-            else:
-                raise utils.PyFecException(Style.BRIGHT + Fore.RED + " %s error: Can't download %s. " % (r.status_code, constructed_url))
+            
+            os.system("curl {} > {}".format(constructed_url,self.local_file_location))
 
         else:
             print Style.BRIGHT + Fore.GREEN + " Using local copy."
