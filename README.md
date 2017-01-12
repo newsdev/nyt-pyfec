@@ -1,5 +1,8 @@
 ![](https://cloud.githubusercontent.com/assets/109988/9589471/97a005a8-4ffc-11e5-9b8b-3da984d183b3.png)
 
+##This is alpha
+Really. On a given day, we make no promises that it works. We make no promises that it's not wrong. We make no promises that we won't push breaking hotfixes. If you're going to use it, please use a fork.
+
 ## Getting started
 ```
 pip install -e git+git@github.com:newsdev/nyt-pyfec.git#egg=nyt-pyfec
