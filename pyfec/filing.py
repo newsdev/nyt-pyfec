@@ -333,7 +333,8 @@ def f3_common_fields():
         
         'other_disbursements':'other_disbursements',
         'objects_to_be_liquidated':'items_on_hand_to_be_liquidated',
-        'total_parties':'political_party_contributions'}
+        'total_parties':'political_party_contributions',
+        'election_date':'election_date'}
 
     return field_names
 
