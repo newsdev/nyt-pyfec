@@ -28,14 +28,14 @@ for this_file in files:
     filing_dict['filer_id'] = f1.get_filer_id()
     filing_dict['transactions'] = []
 
-    print Style.BRIGHT + Fore.GREEN + " Headers: " + Style.BRIGHT + Fore.YELLOW + "%s" % ", ".join(f1.headers.keys())
-    print Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (filing_dict['version'])
+    print(Style.BRIGHT + Fore.GREEN + " Headers: " + Style.BRIGHT + Fore.YELLOW + "%s" % ", ".join(f1.get_headers()))
+    print(Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (filing_dict['version']))
 
     if f1.is_amendment:
-        print Style.BRIGHT + Fore.GREEN + " Amends filing: " + Style.BRIGHT + Fore.YELLOW + "%s" % (f1.headers['amends_filing'])
+        print(Style.BRIGHT + Fore.GREEN + " Amends filing: " + Style.BRIGHT + Fore.YELLOW + "%s" % (f1.amends_filing))
 
     if not fp.is_allowed_form(filing_dict['formtype']):
-        print Style.BRIGHT + Fore.RED + " Not parseable: " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_dict['formtype']
+        print(Style.BRIGHT + Fore.RED + " Not parseable: " + Style.BRIGHT + Fore.YELLOW +  "%s" % filing_dict['formtype'])
         continue
 
     firstrow = fp.parse_form_line(f1.get_first_row(), filing_dict['version'])
@@ -55,15 +55,15 @@ for this_file in files:
 
         except form.ParserMissingError:
             msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
-            print msg
+            print(msg)
             continue
 
     payload.append(filing_dict)
 
-    print Style.BRIGHT + Fore.MAGENTA + "Processed records: " + Style.BRIGHT + Fore.YELLOW +  "%s" % humanize.intcomma(len(filing_dict['transactions']))
-    print Style.BRIGHT + Fore.YELLOW + filing_dict['formtype']
-    print Style.BRIGHT + Fore.YELLOW + filing_dict['version']
-    print Style.BRIGHT + Fore.YELLOW + filing_dict['filer_id']
+    print(Style.BRIGHT + Fore.MAGENTA + "Processed records: " + Style.BRIGHT + Fore.YELLOW +  "%s" % humanize.intcomma(len(filing_dict['transactions'])))
+    print(Style.BRIGHT + Fore.YELLOW + filing_dict['formtype'])
+    print(Style.BRIGHT + Fore.YELLOW + filing_dict['version'])
+    print(Style.BRIGHT + Fore.YELLOW + filing_dict['filer_id'])
 
 end = datetime.datetime.now()
-print Style.BRIGHT + Fore.MAGENTA + "Time to complete: " + Style.BRIGHT + Fore.YELLOW + "%s" % (end - start)
+print(Style.BRIGHT + Fore.MAGENTA + "Time to complete: " + Style.BRIGHT + Fore.YELLOW + "%s" % (end - start))
