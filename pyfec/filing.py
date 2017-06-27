@@ -20,13 +20,6 @@ from pyfec import output_headers
 new_delimiter = chr(28)
 old_delimiter = ','
 
-old_headers = ['record_type', 'ef_type', 'fec_version', 'soft_name', 'soft_ver', 'name_delim', 'report_id', 'report_number']
-new_headers = ['record_type', 'ef_type', 'fec_version', 'soft_name', 'soft_ver', 'report_id', 'report_number']
-paper_headers_v1 = ['record_type', 'fec_version', 'vendor', 'batch_number']
-paper_headers_v2_2 = ['record_type', 'fec_version', 'vendor', 'batch_number']
-paper_headers_v1 = ['record_type', 'fec_version', 'vendor', 'batch_number', 'report_id']
-
-
 class Filing(object):
     """
     Represents a single filing.
