@@ -18,6 +18,46 @@ python -m pyfec.demo
 ```
 
 
+## Example usage
+
+Install pyfec as above. You can then call it from a python app as follows:
+
+```
+from pyfec import form
+from pyfec import filing
+
+fp = form.Form()
+this_file = '1165198' #this is JON OSSOFF FOR CONGRESS's pre-general filing
+f1 = filing.Filing(this_file)
+```
+
+`f1` is a python object with the following fields:
+
+```
+version
+form
+fec_id
+filing_id
+is_paper
+is_amendment
+amends_filing
+soft_name
+soft_ver
+report_number
+ef_type
+record_type
+fields
+```
+
+And fields is a dictionary of the fields available in an filing's first row.
+
+To get parsed transactions from a filing:
+
+```
+row = f1.get_body_row()
+fp.parse_form_line(row, f1.version)
+```
+
 ## how to update fec-csv-sources...
 
 ...if you, like me, are other than awesome at git.
