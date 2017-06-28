@@ -8,6 +8,8 @@ import requests
 from collections import defaultdict
 from datetime import datetime
 
+import pycurl
+
 from pyfec import header
 from pyfec import form
 from pyfec.utils import utf8_clean, clean_entry
@@ -82,7 +84,13 @@ class Filing(object):
             print(Style.BRIGHT + Fore.GREEN + " Downloading from the FEC.")
 
             constructed_url = '{base_url}/{file_location}'.format(base_url=self.document_base_url, file_location=self.local_file_location.split('/')[-1])
-            os.system("curl {} > {}".format(constructed_url,self.local_file_location))
+            
+            with open(self.local_file_location, 'wb') as f:
+                c = pycurl.Curl()
+                c.setopt(c.URL, constructed_url)
+                c.setopt(c.WRITEDATA, f)
+                c.perform()
+                c.close()
 
         else:
             print(Style.BRIGHT + Fore.GREEN + " Using local copy.")
