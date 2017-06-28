@@ -82,7 +82,6 @@ class Filing(object):
             print(Style.BRIGHT + Fore.GREEN + " Downloading from the FEC.")
 
             constructed_url = '{base_url}/{file_location}'.format(base_url=self.document_base_url, file_location=self.local_file_location.split('/')[-1])
-            
             os.system("curl {} > {}".format(constructed_url,self.local_file_location))
 
         else:
@@ -93,13 +92,13 @@ class Filing(object):
             nextline = self.fh.readline()
 
             if nextline:
-                return [utf8_clean(i) for i in nextline.split(new_delimiter)]
+                return nextline.split(new_delimiter)
 
             else:
                 return None
         else:
             try:
-                return [utf8_clean(i) for i in self.csv_reader.next()]
+                return next(self.csv_reader)
 
             except StopIteration:
                 return None

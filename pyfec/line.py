@@ -22,7 +22,7 @@ class Line(object):
             form_file = "%s/%s.csv" % (CSV_FILE_DIRECTORY, form)
 
         form_reader = csv.reader(open(form_file, 'rU'))
-        header = form_reader.next()
+        header = next(form_reader)
 
         for i, regex in enumerate(header):
             if (regex != '' and regex != 'canonical'):
