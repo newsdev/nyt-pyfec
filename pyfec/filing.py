@@ -289,7 +289,7 @@ class Filing(object):
         self.is_periodic = False
         if self.is_f5_quarterly:
             self.is_periodic = True
-        elif self.form.upper() in ['F3','F3X','F3P','F4','F7']:
+        elif self.form_type.upper() in ['F3','F3X','F3P','F4','F7']:
             self.is_periodic = True
 
         parsed_data['is_periodic'] = self.is_periodic
