@@ -74,6 +74,8 @@ class Filing(object):
             self.fh.seek(0)
             self.csv_reader = csv.reader(self.fh)
         
+        self.is_f5_quarterly = False #will be set in get_form_fields if true
+
         self.is_error = not self.parse_headers()
         self.fields = self.get_form_fields()
 
