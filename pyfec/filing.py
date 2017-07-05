@@ -79,11 +79,7 @@ class Filing(object):
         self.is_error = not self.parse_headers()
         self.fields = self.get_form_fields()
 
-        self.is_periodic = False
-        if self.is_f5_quarterly:
-            self.is_periodic = True
-        elif self.form.upper() in ['F3','F3X','F3P','F4','F7']:
-            self.is_periodic = True
+        
 
     def get_filing(self):
         init(autoreset=True)
@@ -289,6 +285,14 @@ class Filing(object):
         parsed_data['committee_name'] = summary.get('committee_name')
         if not parsed_data['committee_name']:
             parsed_data['committee_name'] = summary.get('organization_name')
+
+        self.is_periodic = False
+        if self.is_f5_quarterly:
+            self.is_periodic = True
+        elif self.form.upper() in ['F3','F3X','F3P','F4','F7']:
+            self.is_periodic = True
+
+        parsed_data['is_periodic'] = self.is_periodic
 
         return(parsed_data)
 
