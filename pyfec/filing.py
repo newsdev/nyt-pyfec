@@ -77,6 +77,13 @@ class Filing(object):
         self.is_error = not self.parse_headers()
         self.fields = self.get_form_fields()
 
+        self.is_periodic = False
+        if self.is_f5_quarterly:
+            self.is_periodic = True
+        elif self.form.upper() in ['F3','F3X','F3P','F4','F7']:
+            self.is_periodic = True
+
+
 
     def get_filing(self):
         init(autoreset=True)
@@ -247,11 +254,12 @@ class Filing(object):
         elif form_type in ['F5', 'F5A', 'F5N']:
             parsed_data = process_f5_header(summary)
                     
-            try:
+            if 'report_code' in summary:
                 self.is_f5_quarterly = summary['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
-            except KeyError:
-                # this is probably a problem. 
-                pass
+            elif 'coverage_from_date' in summary and 'coverage_from_date' in summary:
+                self.is_f5_quarterly = (summary['coverage_from_date'] and summary['coverage_to_date'])
+            else:
+                self.is_f5_quarterly = False
 
         elif form_type in ['F7', 'F7A', 'F7N']:
             parsed_data = process_f7_header(summary)        

@@ -46,6 +46,7 @@ soft_ver
 report_number
 ef_type
 record_type
+is_periodic
 fields
 ```
 
