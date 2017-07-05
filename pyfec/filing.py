@@ -281,11 +281,11 @@ class Filing(object):
         parsed_data['fec_id'] = self.fec_id
         parsed_data['is_amendment'] = self.is_amendment
         parsed_data['amends_filing'] = self.amends_filing
-        parsed_data['filed_date'] = dateparse_notnull(header_data.get('date_signed'))
+        parsed_data['filed_date'] = dateparse_notnull(summary.get('date_signed'))
         parsed_data['form_type'] = form_type
-        parsed_data['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-        parsed_data['coverage_to_date'] = dateparse_notnull(header_data.get('coverage_through_date'))
-        parsed_data['election_date'] = dateparse_notnull(header_data.get('election_date'))
+        parsed_data['coverage_from_date'] = dateparse_notnull(summary.get('coverage_from_date'))
+        parsed_data['coverage_to_date'] = dateparse_notnull(summary.get('coverage_through_date'))
+        parsed_data['election_date'] = dateparse_notnull(summary.get('election_date'))
         parsed_data['committee_name'] = summary.get('committee_name')
         if not parsed_data['committee_name']:
             parsed_data['committee_name'] = summary.get('organization_name')
