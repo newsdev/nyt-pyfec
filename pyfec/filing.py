@@ -325,7 +325,7 @@ class Filing(object):
 def dateparse_notnull(datestring):
     """ dateparse returns today if given an empty string. Don't do that. """
     if datestring:
-        datestring = datetime.strptime(datestring, '%Y%m%d')
+        return datetime.strptime(datestring, '%Y%m%d')
     else:
         return None
 
