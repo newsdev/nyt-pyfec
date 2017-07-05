@@ -85,8 +85,6 @@ class Filing(object):
         elif self.form.upper() in ['F3','F3X','F3P','F4','F7']:
             self.is_periodic = True
 
-
-
     def get_filing(self):
         init(autoreset=True)
         if not os.path.isfile(self.local_file_location):
@@ -283,11 +281,11 @@ class Filing(object):
         parsed_data['fec_id'] = self.fec_id
         parsed_data['is_amendment'] = self.is_amendment
         parsed_data['amends_filing'] = self.amends_filing
-        parsed_data['filed_date'] = summary.get('date_signed')
+        parsed_data['filed_date'] = dateparse_notnull(header_data.get('date_signed'))
         parsed_data['form_type'] = form_type
-        parsed_data['coverage_from_date'] = summary.get('coverage_from_date')
-        parsed_data['coverage_to_date'] = summary.get('coverage_through_date')
-        parsed_data['election_date'] = summary.get('election_date')
+        parsed_data['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
+        parsed_data['coverage_to_date'] = dateparse_notnull(header_data.get('coverage_through_date'))
+        parsed_data['election_date'] = dateparse_notnull(header_data.get('election_date'))
         parsed_data['committee_name'] = summary.get('committee_name')
         if not parsed_data['committee_name']:
             parsed_data['committee_name'] = summary.get('organization_name')
@@ -330,7 +328,9 @@ def dateparse_notnull(datestring):
 
 def process_header(header_data, field_names):
     return_dict = defaultdict(lambda:0)
-    totals_dict = defaultdict(lambda:0)
+
+    #election date is being done separately because it has to be None, not zero, if it's an empty string
+    return_dict['election_date'] = dateparse_notnull(header_data.get('election_date'))
 
     for new_key, fec_key in field_names.items():
         current_val = header_data.get(fec_key)
@@ -342,7 +342,6 @@ def f3_common_fields():
         #fields that have no reasonable cycle value (these tend to be snapshots)
         'coh_end':'col_a_cash_on_hand_close_of_period',
         'outstanding_debts':'debts_by',
-        'election_date':'election_date',
         'objects_to_be_liquidated':'col_a_items_on_hand_to_be_liquidated',
 
         #period values for fields
@@ -509,14 +508,14 @@ def process_f5_header(header_data):
     # non-committee report of IE's
     return_dict= defaultdict(lambda:0)
     return_dict['period_total_receipts'] = header_data.get('total_contribution')
-    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure')  
+    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure')
 
     # This usually isn't reported, but... 
     return_dict['period_total_contributions'] = header_data.get('total_contribution')
     
     # sometimes the dates are missing--in this case make sure it's set to None--this will otherwise default to today.
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
-    return_dict['coverage_to_date'] =dateparse_notnull(header_data.get('coverage_through_date'))   
+    return_dict['coverage_to_date'] = dateparse_notnull(header_data.get('coverage_through_date'))   
     
     if return_dict['total_receipts'] == "":
         return_dict['period_total_receipts'] = None
