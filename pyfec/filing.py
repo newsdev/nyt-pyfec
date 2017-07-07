@@ -303,12 +303,50 @@ class Filing(object):
         writer.writeheader()
         writer.writerow(self.fields)
 
+    def get_transactions(self):
+        try:
+            self.transactions
+        except AttributeError:
+            self.transactions = {}
+        else:
+            return
+
+        fp = form.Form()
+        while True:
+            row = self.get_body_row()
+
+            if not row:
+                break
+
+            try:
+                linedict = fp.parse_form_line(row, self.version)
+
+            except form.ParserMissingError:
+                continue
+
+
+            form_parser = linedict['form_parser']
+            if not form_parser in self.transactions:
+                self.transactions[form_parser] = []
+            del linedict['form_parser']
+            self.transactions[form_parser].append(linedict)
 
     def write_skeda(self):
-        #write sked a's to a csv
-        #note that superseded_by_amendment, covered_by_periodic and obsolete are always going to be false
-        #these are fields the loader needs in the db and computes later based on other filings
-        pass
+        try:
+            self.transactions
+        except AttributeError:
+            self.get_transactions()
+        skedas = self.transactions['SchA']
+        fieldnames = output_headers.skeda_headers
+        writer = csv.DictWriter(sys.stdout, fieldnames)
+        writer.writeheader()
+        writer.writerows(skedas)
+
+        #parsed_row = fp.parse_form_line(row, self.version)
+        #print(parsed_row)
+
+            
+        
 
     def write_skedb(self):
         #write sked a's to a csv
