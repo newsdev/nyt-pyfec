@@ -28,7 +28,7 @@ for this_file in files:
     filing_dict['filer_id'] = f1.get_filer_id()
     filing_dict['transactions'] = []
 
-    print(Style.BRIGHT + Fore.GREEN + " Headers: " + Style.BRIGHT + Fore.YELLOW + "%s" % ", ".join(f1.get_headers()))
+    #print(Style.BRIGHT + Fore.GREEN + " Headers: " + Style.BRIGHT + Fore.YELLOW + "%s" % ", ".join(f1.get_headers()))
     print(Style.BRIGHT + Fore.GREEN + " Version: " + Style.BRIGHT + Fore.YELLOW +  "%s" % (filing_dict['version']))
 
     if f1.is_amendment:
