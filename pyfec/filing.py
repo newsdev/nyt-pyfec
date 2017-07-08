@@ -331,34 +331,28 @@ class Filing(object):
             del linedict['form_parser']
             self.transactions[form_parser].append(linedict)
 
-    def write_skeda(self):
+    def write_transactions(self, line_type, fieldnames):
         try:
             self.transactions
         except AttributeError:
             self.get_transactions()
-        skedas = self.transactions['SchA']
+        skeds = self.transactions[line_type]
         fieldnames = output_headers.skeda_headers
         writer = csv.DictWriter(sys.stdout, fieldnames)
         writer.writeheader()
-        writer.writerows(skedas)
+        writer.writerows(skeds)
 
-        #parsed_row = fp.parse_form_line(row, self.version)
-        #print(parsed_row)
 
-            
-        
+    def write_skeda(self):
+        self.write_transactions('SchA',output_headers.skeda_headers)
 
     def write_skedb(self):
-        #write sked a's to a csv
-        #note that superseded_by_amendment, covered_by_periodic and obsolete are always going to be false
-        #these are fields the loader needs in the db and computes later based on other filings
-        pass
+        self.write_transactions('SchB',output_headers.skedb_headers)
 
     def write_skede(self):
-        #write sked a's to a csv
-        #note that superseded_by_amendment, covered_by_periodic and obsolete are always going to be false
-        #these are fields the loader needs in the db and computes later based on other filings
-        pass
+        self.write_transactions('SchE',output_headers.skede_headers)
+
+
 
 def dateparse_notnull(datestring):
     """ dateparse returns today if given an empty string. Don't do that. """
