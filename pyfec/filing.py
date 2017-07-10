@@ -331,26 +331,23 @@ class Filing(object):
             del linedict['form_parser']
             self.transactions[form_parser].append(linedict)
 
-    def write_transactions(self, line_type, fieldnames):
+    def get_sked_type(self, line_type):
+        #if write_to_stdout is True, write to stdout. Otherwise, return.
         try:
             self.transactions
         except AttributeError:
             self.get_transactions()
-        skeds = self.transactions[line_type]
-        fieldnames = output_headers.skeda_headers
-        writer = csv.DictWriter(sys.stdout, fieldnames)
-        writer.writeheader()
-        writer.writerows(skeds)
+        return self.transactions[line_type]
 
 
-    def write_skeda(self):
-        self.write_transactions('SchA',output_headers.skeda_headers)
+    def get_skeda(self):
+        return self.get_sked_type('SchA')
 
-    def write_skedb(self):
-        self.write_transactions('SchB',output_headers.skedb_headers)
+    def get_skedb(self):
+        return self.get_sked_type('SchB')
 
-    def write_skede(self):
-        self.write_transactions('SchE',output_headers.skede_headers)
+    def get_skede(self):
+        return self.get_sked_type('SchE')
 
 
 
