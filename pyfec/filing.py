@@ -337,7 +337,10 @@ class Filing(object):
             self.transactions
         except AttributeError:
             self.get_transactions()
-        return self.transactions[line_type]
+        if line_type in self.transactions:
+            return self.transactions[line_type]
+        return []
+
 
 
     def get_skeda(self):
