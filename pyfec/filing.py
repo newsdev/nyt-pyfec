@@ -545,7 +545,7 @@ def process_f5_header(header_data):
     # non-committee report of IE's
     return_dict= defaultdict(lambda:0)
     return_dict['period_total_receipts'] = header_data.get('total_contribution')
-    return_dict['total_disbursements'] = header_data.get('total_independent_expenditure')
+    return_dict['period_total_disbursements'] = header_data.get('total_independent_expenditure')
 
     # This usually isn't reported, but... 
     return_dict['period_total_contributions'] = header_data.get('total_contribution')

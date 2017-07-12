@@ -86,7 +86,8 @@ filing_headers = ["cycle",
     "amended_by",
     "covered_by_periodic_filing",
     "covered_by",
-    "is_f5_quarterly"
+    "is_f5_quarterly",
+    "is_periodic",
 
     "cycle_loans_from_candidate",
     "cycle_noncandidate_loans",
