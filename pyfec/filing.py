@@ -79,6 +79,7 @@ class Filing(object):
         self.is_error = not self.parse_headers()
         self.fields = self.get_form_fields()
 
+
         
 
     def get_filing(self):
@@ -553,12 +554,14 @@ def process_f5_header(header_data):
     return_dict['coverage_from_date'] = dateparse_notnull(header_data.get('coverage_from_date'))
     return_dict['coverage_to_date'] = dateparse_notnull(header_data.get('coverage_through_date'))   
     
+    """
     if return_dict['total_receipts'] == "":
         return_dict['period_total_receipts'] = None
     if return_dict['total_contributions'] == "":
         return_dict['period_total_contributions'] = None
     if return_dict['total_disbursements'] == "":
         return_dict['period_total_disbursements'] = None
+    """
 
     return return_dict
     
